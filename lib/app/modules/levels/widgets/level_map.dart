@@ -93,13 +93,13 @@ class _GameLevelMapState extends State<GameLevelMap> {
   }
 
   void _goToCurrentLevel() async {
-    await Future.delayed(const Duration(seconds: 1));
-    // Scrollable.ensureVisible(const GlobalObjectKey(34).currentContext!,
-    //     duration: const Duration(seconds: 3), // duration for scrolling time
-    //     alignment: .5, // 0 mean, scroll to the top, 0.5 mean, half
-    // curve: Curves.easeInOutQuart);
+    await Future.delayed(const Duration(seconds: 4));
+    Scrollable.ensureVisible(const GlobalObjectKey(34).currentContext!,
+        duration: const Duration(seconds: 3), // duration for scrolling time
+        alignment: .5, // 0 mean, scroll to the top, 0.5 mean, half
+    curve: Curves.easeInOutQuart);
     // _controller.jumpTo(32.0);
-    _controller.animateTo(0,
-        duration: const Duration(seconds: 1), curve: Curves.easeInOutQuart);
+    // _controller.animateTo(0,
+    //     duration: const Duration(seconds: 1), curve: Curves.easeInOutQuart);
   }
 }
