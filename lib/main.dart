@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/data/controllers/theme_controller.dart';
 import 'package:sudoku_classic/app/data/local_db/theme_db.dart';
 import 'package:sudoku_classic/app/data/theme/theme_color_1.dart';
+import 'package:sudoku_classic/app/modules/home/controllers/home_controller.dart';
 
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
-   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   ThemeController themeController = Get.put(ThemeController());
   themeController.isLight.value = (await ThemeDataBase().getTheme());
-FlutterNativeSplash.remove();
+Get.put(HomeController());
   runApp(
     GetMaterialApp(
       // This theme was made for FlexColorScheme version 6.1.1. Make sure

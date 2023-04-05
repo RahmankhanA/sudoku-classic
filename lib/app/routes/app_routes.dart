@@ -6,6 +6,7 @@ abstract class Routes {
   static const HOME = _Paths.HOME;
   static const LEVELS = _Paths.LEVELS;
   static const SPLASH_SCREEN = _Paths.SPLASH_SCREEN;
+
 }
 
 abstract class _Paths {
@@ -13,4 +14,5 @@ abstract class _Paths {
   static const HOME = '/home';
   static const LEVELS = '/levels';
   static const SPLASH_SCREEN = '/splash-screen';
+
 }
