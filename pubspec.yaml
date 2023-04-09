@@ -19,6 +19,7 @@ dependencies:
 
 
   level_map: ^0.2.0
+  sudoku_solver_generator: ^2.1.0+1
   # game_level_map: ^1.0.0+1
 
 
