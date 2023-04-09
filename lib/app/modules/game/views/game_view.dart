@@ -87,6 +87,7 @@ class GameView extends GetView<GameController> {
                                 height: 37,
                                 width: 30,
                                 decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
                                     border: Border.all(),
                                     color: (controller.colSelected ==
                                                 colIndex &&
@@ -104,7 +105,7 @@ class GameView extends GetView<GameController> {
                                                         colIndex > 2 &&
                                                         colIndex < 6)||(rowIndex>5&& ((colIndex < 3 ||
                                                             colIndex > 5)))
-                                                ? Colors.grey
+                                                ? theme.primaryColorDark
                                                 : LevelColor.backgroundColor),
                                 // row<3 &&( col<3 || col>5)/
                                 child: Center(
