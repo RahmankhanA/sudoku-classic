@@ -56,7 +56,7 @@ class GameController extends GetxController {
 
   @override
   void onInit() {
-    generateSudoku(emptySpace: 5);
+    generateSudoku(emptySpace: 18);
     super.onInit();
   }
 
