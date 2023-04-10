@@ -28,4 +28,16 @@ class SudokuModel {
 
 
 
+
+  @override
+  bool operator ==(covariant SudokuModel other) {
+    if (identical(this, other)) return true;
+
+    return
+      other.value == value ;
+
+  }
+
+  @override
+  int get hashCode => value.hashCode ;
 }

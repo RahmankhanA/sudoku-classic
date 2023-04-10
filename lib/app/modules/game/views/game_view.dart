@@ -201,10 +201,10 @@ class GameView extends GetView<GameController> {
                               style: ElevatedButton.styleFrom(
                                 shape: const CircleBorder(),
                                 padding: const EdgeInsets.all(5),
-                                backgroundColor:
-                                    controller.selectedNumber == index + 1
-                                        ? theme.shadowColor
-                                        : theme.scaffoldBackgroundColor,
+                                // backgroundColor:
+                                //     controller.selectedNumber == index + 1
+                                //         ? theme.shadowColor
+                                //         : theme.scaffoldBackgroundColor,
                               ),
                               label: Text(
                                 controller.remainingNumberCount[index]
