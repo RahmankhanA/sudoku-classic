@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/data/colors/level_color.dart';
@@ -30,7 +32,7 @@ class GameView extends GetView<GameController> {
         ],
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -39,242 +41,183 @@ class GameView extends GetView<GameController> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    controller.generateSudoku(emptySpace: 27);
+                    controller.generateSudoku(emptySpace: 18);
                   },
                   icon: const Icon(Icons.refresh),
                   label: const Text("Reset"),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.fillNextHint();
+                  },
                   icon: const Icon(Icons.lightbulb_outline_rounded),
                   label: const Text("Hint"),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   icon: const Icon(
                     Icons.favorite,
                     color: Colors.red,
                   ),
-                  label: const Text("3 Life"),
+                  label: Obx(() => Text("${controller.lifeRemain.value} Life")),
                 ),
               ],
             ),
           ),
-          SizedBox(
-            height: Get.height * 0.6,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GetBuilder(
-                init: controller,
-                initState: (_) {},
-                builder: (_) {
-                  return Table(
-                    border: TableBorder.all(
-                        // color: Colors.deepPurple
-                        ),
-                    children: List.generate(
-                      9,
-                      (rowIndex) => TableRow(
-                        children: List.generate(
-                          9,
-                          (colIndex) => GestureDetector(
-                              onTap: () {
-                                controller.rowSelected = rowIndex;
-                                controller.colSelected = colIndex;
-                                controller.update();
-                              },
-                              child: Container(
-                                height: 37,
-                                width: 30,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.0),
-                                    border: Border.all(),
-                                    color: (controller.colSelected ==
-                                                colIndex &&
+          const SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: GetBuilder(
+              init: controller,
+              initState: (_) {},
+              builder: (_) {
+                return Table(
+                  border: TableBorder.all(
+                      // color: Colors.deepPurple
+                      ),
+                  children: List.generate(
+                    9,
+                    (rowIndex) => TableRow(
+                      children: List.generate(
+                        9,
+                        (colIndex) => GestureDetector(
+                          onTap: () {
+                            controller.rowSelected = rowIndex;
+                            controller.colSelected = colIndex;
+                            controller.update();
+                          },
+                          // onDoubleTap: () {
+                          //   // if(controller.sudokuGenerator.newSudoku[])
+                          //   print(controller.sudokuGenerator.newSudoku[rowIndex][colIndex]);
+                          // },
+                          child: Container(
+                            height: 37,
+                            width: 30,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.0),
+                                border: Border.all(),
+                                color: (controller.colSelected == colIndex &&
+                                        controller.rowSelected == rowIndex)
+                                    ? Colors.brown[700]
+                                    : (controller.colSelected == colIndex ||
                                             controller.rowSelected == rowIndex)
-                                        ? Colors.cyan
-                                        : (controller.colSelected == colIndex ||
-                                                controller.rowSelected ==
-                                                    rowIndex)
-                                            ? Colors.lightBlue
-                                            : rowIndex < 3 &&
-                                                        (colIndex < 3 ||
-                                                            colIndex > 5) ||
-                                                    (rowIndex > 2 &&
-                                                        rowIndex < 6 &&
-                                                        colIndex > 2 &&
-                                                        colIndex < 6)||(rowIndex>5&& ((colIndex < 3 ||
-                                                            colIndex > 5)))
-                                                ? theme.primaryColorDark
-                                                : LevelColor.backgroundColor),
-                                // row<3 &&( col<3 || col>5)/
-                                child: Center(
-                                  child: Text(
-                                    controller.puzzle[rowIndex][colIndex] == 0
-                                        ? " "
-                                        : controller.puzzle[rowIndex][colIndex]
-                                            .toString(),
-                                  ),
-                                  // child: Text(' '),
+                                        ? theme.primaryColorDark
+                                        // ? Colors.brown
+                                        : rowIndex < 3 &&
+                                                    (colIndex < 3 ||
+                                                        colIndex > 5) ||
+                                                (rowIndex > 2 &&
+                                                    rowIndex < 6 &&
+                                                    colIndex > 2 &&
+                                                    colIndex < 6) ||
+                                                (rowIndex > 5 &&
+                                                    ((colIndex < 3 ||
+                                                        colIndex > 5)))
+                                            // ? Colors.deepPurple
+                                            ? theme.focusColor
+                                            : LevelColor.backgroundColor),
+                            // row<3 &&( col<3 || col>5)/
+                            child: Center(
+                              child: Text(
+                                controller.puzzle[rowIndex][colIndex].value == 0
+                                    ? " "
+                                    : controller
+                                        .puzzle[rowIndex][colIndex].value
+                                        .toString(),
+                                style: TextStyle(
+                                  color: !controller
+                                          .puzzle[rowIndex][colIndex].isValid
+                                      ? Colors.red
+                                      : controller.puzzle[rowIndex][colIndex]
+                                              .isEditable
+                                          ? const Color.fromARGB(
+                                              255, 4, 242, 178)
+                                          : Colors.white,
                                 ),
-                              )),
+                              ),
+                              // child: Text(' '),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  );
-                  // return Table(
-                  //   border: TableBorder.all(
-                  //     color: Colors.deepPurple
-                  //   ),
-                  //   children: List.generate(
-                  //     9,
-                  //     (rowIndex) => TableRow(
-
-                  //       children: List.generate(
-                  //         9,
-                  //         (colIndex) => GestureDetector(
-                  //             onTap: () {
-                  //               controller.rowSelected = rowIndex;
-                  //               controller.colSelected = colIndex;
-                  //               controller.update();
-                  //             },
-                  //             child: Container(
-                  //               height: 37,
-                  //               width: 30,
-                  //               decoration: BoxDecoration(
-                  //                   border: Border.all(),
-                  //                   color: (controller.colSelected ==
-                  //                               colIndex ||
-                  //                           controller.rowSelected == rowIndex)
-                  //                       ? Colors.blue
-                  //                       : LevelColor.backgroundColor),
-                  //               child: Center(
-                  //                 child: Text(
-                  //                   controller.puzzle[rowIndex][colIndex] == 0
-                  //                       ? " "
-                  //                       : controller.puzzle[rowIndex][colIndex]
-                  //                           .toString(),
-                  //                 ),
-                  //                 // child: Text(' '),
-                  //               ),
-                  //             )),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
-                  // return Table(
-                  //   border: TableBorder.all(
-                  //     color: Colors.deepPurple
-                  //   ),
-                  //   children: List.generate(
-                  //     9,
-                  //     (rowIndex) => TableRow(
-
-                  //       children: List.generate(
-                  //         9,
-                  //         (colIndex) => GestureDetector(
-                  //             onTap: () {
-                  //               controller.rowSelected = rowIndex;
-                  //               controller.colSelected = colIndex;
-                  //               controller.update();
-                  //             },
-                  //             child: Container(
-                  //               height: 37,
-                  //               width: 30,
-                  //               decoration: BoxDecoration(
-                  //                   border: Border.all(),
-                  //                   color: (controller.colSelected ==
-                  //                               colIndex ||
-                  //                           controller.rowSelected == rowIndex)
-                  //                       ? Colors.blue
-                  //                       : LevelColor.backgroundColor),
-                  //               child: Center(
-                  //                 child: Text(
-                  //                   controller.puzzle[rowIndex][colIndex] == 0
-                  //                       ? " "
-                  //                       : controller.puzzle[rowIndex][colIndex]
-                  //                           .toString(),
-                  //                 ),
-                  //                 // child: Text(' '),
-                  //               ),
-                  //             )),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
-          //  for (int i = 0; i < 9; i++)
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       for (int j = 0; j < 9; j++)
-
-          // Container(
-          //   height: 35,
-          //   width: 35,
-          //   color: Colors.red,
-          //   margin: const EdgeInsets.all(2),
-          // )
-          //     ],
-          //   ),
+          const SizedBox(
+            height: 20,
+          ),
           SizedBox(
             height: 130,
             width: 400,
             child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 6,
+                  crossAxisCount: 7,
                   crossAxisSpacing: 5,
                   mainAxisSpacing: 5,
                 ),
                 itemBuilder: (context, index) {
                   return index ==
                           9 // if index is 10 , then show delete button else show normal number button.
-                      ? ElevatedButton.icon(
+                      ? ElevatedButton(
                           // !---------Delete number button----------!
                           onPressed: () {
-                            // setState(() {
-                            //   sudokuGrid[rowSelected][colSelected] = 0;
-                            //   UserInputNumbers[rowSelected][colSelected] =
-                            //       false;
-                            // });
+                            controller.onPressedDeleteIcon();
                           },
                           style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(5),
                           ),
-                          icon: const Icon(Icons.delete),
-                          label: const Text(''),
+                          child: const Icon(
+                            Icons.delete,
+                            size: 30,
+                          ),
+                          // label: const Text(''),
                         )
-                      : ElevatedButton.icon(
-                          // !---------Normal number button----------!
-                          onPressed: () {
-                            // setState(() {
-                            //   sudokuGrid[rowSelected][colSelected] =
-                            //       index + 1;
-                            //   UserInputNumbers[rowSelected][colSelected] =
-                            //       true;
-                            // });
+                      : GetBuilder(
+                          init: controller,
+                          initState: (_) {},
+                          builder: (_) {
+                            return ElevatedButton.icon(
+                              // !---------Normal number button----------!
+                              onPressed: () {
+                                // controller.selectedNumber = index + 1;
+                                // controller.sudokuGenerator.newSudoku[
+                                //                   controller.rowSelected]
+                                //               [controller.colSelected] ==
+                                //           0 &&
+                                controller.onPressedNumber(value: index + 1);
+                              },
+                              icon: Text(
+                                '${index + 1}',
+                                style: const TextStyle(fontSize: 25),
+                              ),
+                              style: ElevatedButton.styleFrom(
+                                shape: const CircleBorder(),
+                                padding: const EdgeInsets.all(5),
+                                backgroundColor:
+                                    controller.selectedNumber == index + 1
+                                        ? theme.shadowColor
+                                        : theme.scaffoldBackgroundColor,
+                              ),
+                              label: Text(
+                                controller.remainingNumberCount[index]
+                                    .toString(),
+                                textAlign: TextAlign.end,
+                                textScaleFactor: 0.78,
+                              ),
+                              // child: Text(
+                              //   '${index + 1}',
+                              //   style: const TextStyle(fontSize: 25),
+                              // ),
+                            );
                           },
-                          icon: Text(
-                            '${index + 1}',
-                            style: const TextStyle(fontSize: 25),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(5),
-                          ),
-                          label: Text(
-                            index.toString(),
-                            textAlign: TextAlign.end,
-                            textScaleFactor: 0.78,
-                          ),
-                          // child: Text(
-                          //   '${index + 1}',
-                          //   style: const TextStyle(fontSize: 25),
-                          // ),
                         );
                 },
                 itemCount: 10),

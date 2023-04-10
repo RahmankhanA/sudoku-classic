@@ -1,9 +1,5 @@
-// import 'package:sudoku_solver_generator/src/sudoku_exceptions_base.dart';
-// import 'package:sudoku_solver_generator/src/sudoku_utilities_base.dart';
-
-
-
-import 'package:sudoku_solver_generator/sudoku_solver_generator.dart';
+import 'package:sudoku_classic/app/modules/game/service/sudoku_excepttion_base.dart';
+import 'package:sudoku_classic/app/modules/game/service/sudoku_utility.dart';
 
 /// Provides the functionality of generating Sudoku puzzles.
 ///
@@ -113,7 +109,7 @@ class SudokuGenerator {
     return numberList[0];
   }
 
-  bool _checkIfSafe(int i, int j, int number) =>
+  bool checkIfSafe(int i, int j, int number) =>
       (_unUsedInRow(i, number) && _unUsedInColumn(j, number)) &&
       _unUsedInBox(i - (i % 3), j - (j % 3), number);
 
@@ -163,7 +159,7 @@ class SudokuGenerator {
       }
     }
     for (var number = 1; number <= 9; number++) {
-      if (_checkIfSafe(i, j, number)) {
+      if (checkIfSafe(i, j, number)) {
         _sudoku[i][j] = number;
         if (_fillRemaining(i, j + 1)) {
           return true;
