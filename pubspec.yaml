@@ -19,6 +19,7 @@ dependencies:
 
 
   level_map: ^0.2.0
+  line_awesome_flutter: ^2.0.0
  
   # game_level_map: ^1.0.0+1
 

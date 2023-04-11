@@ -1,23 +1,21 @@
 import 'package:get/get.dart';
+import 'package:sudoku_classic/app/data/controllers/theme_controller.dart';
+import 'package:sudoku_classic/app/data/local_db/profile.dart';
+import 'package:sudoku_classic/app/modules/profile/model/profile_model.dart';
 
 class ProfileController extends GetxController {
-  //TODO: Implement ProfileController
+  late ProfileModel user;
+  ThemeController themeController = Get.find<ThemeController>();
 
-  final count = 0.obs;
   @override
-  void onInit() {
+  void onInit() async {
+    user = await ProfileDataBase().getUserProfile();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
 
-  void increment() => count.value++;
+  updateUserProfile(ProfileModel profile){
+    ProfileDataBase().setUserProfile(profile);
+  }
 }

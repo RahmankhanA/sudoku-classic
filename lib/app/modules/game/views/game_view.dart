@@ -13,10 +13,19 @@ class GameView extends GetView<GameController> {
   const GameView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    // log(Get.arguments.toString(
+    // log(Get.arguments['gameLevel'].toString());
     ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Sudoku "),
+        title: GetBuilder(
+          init: controller,
+          initState: (_) {},
+          builder: (_) {
+            return Text(
+                "${controller.gameType} Level ${controller.currentLevel}");
+          },
+        ),
         centerTitle: true,
         actions: [
           Obx(() => Padding(
@@ -54,9 +63,7 @@ class GameView extends GetView<GameController> {
                   label: const Text("Hint"),
                 ),
                 ElevatedButton.icon(
-                  onPressed: () {
-
-                  },
+                  onPressed: () {},
                   icon: const Icon(
                     Icons.favorite,
                     color: Colors.red,

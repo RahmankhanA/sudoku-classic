@@ -30,7 +30,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
         ),
       ),
       navigator: const HomeView(),
-      durationInSeconds: 3,
+      durationInSeconds: 0,
     );
   }
 }

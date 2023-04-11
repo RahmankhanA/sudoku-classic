@@ -5,12 +5,17 @@ import 'package:get/get.dart';
 import 'package:sudoku_classic/app/modules/game/model/sudoku_model.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_service.dart';
 import 'package:sudoku_classic/app/modules/game/widgets/alert.dart';
+import 'package:sudoku_classic/app/modules/profile/controllers/profile_controller.dart';
 
 class GameController extends GetxController {
+  ProfileController profileController = Get.find<ProfileController>();
+
   // for showing the timer
   Timer? _timer;
   int remainingSeconds = 1;
   final time = '00.00'.obs;
+  String gameType = '';
+  late int currentLevel;
 
 // for showing the remaining chance
   RxInt lifeRemain = 5.obs;
@@ -61,14 +66,19 @@ class GameController extends GetxController {
 
   @override
   void onInit() {
+    // profileController = Get.find<ProfileController>();
     // creating initial sudoku
-    generateSudoku(emptySpace: 18);
+    gameType = Get.arguments['Type'];
+    currentLevel = Get.arguments['gameLevel'];
+    generateSudoku(emptySpace: gameType=='Easy'?18:gameType=='Medium'?27:36);
     super.onInit();
   }
 
   @override
   void onReady() {
     _startTimer(0);
+    log("${Get.arguments['Type']} Level ${Get.arguments['gameLevel']}");
+
     super.onReady();
   }
 
@@ -118,6 +128,7 @@ class GameController extends GetxController {
       bool res = isPuzzleSolved(
           puzzleBoard: puzzle, solution: sudokuGenerator.newSudokuSolved);
       if (res) {
+        increaseLevel();
         // showing the solved puzzle alert
         CustomAlert.gameWon(controller: this);
       }
@@ -183,6 +194,7 @@ class GameController extends GetxController {
       bool res = isPuzzleSolved(
           puzzleBoard: puzzle, solution: sudokuGenerator.newSudokuSolved);
       if (res) {
+        increaseLevel();
         // showing the solved puzzle alert
         CustomAlert.gameWon(controller: this);
       }
@@ -271,5 +283,52 @@ class GameController extends GetxController {
     }
     log("unsolved");
     return true;
+  }
+
+  void increaseLevel() {
+    switch (gameType) {
+      case 'Easy':
+        profileController.user = profileController.user.copyWith(
+          currentEasyLevel: profileController.user.currentEasyLevel + 1,
+          score: profileController.user.score + 10,
+          isMediumLevelActive:
+              profileController.user.score > 100 ? true : false,
+          currentMediumLevel: profileController.user.currentMediumLevel == 0
+              ? 1
+              : profileController.user.currentMediumLevel,
+          isHardLevelActive: profileController.user.score > 200 ? true : false,
+          currentHardLevel: profileController.user.currentHardLevel == 0
+              ? 1
+              : profileController.user.currentHardLevel,
+        );
+
+        profileController.updateUserProfile(profileController.user);
+        currentLevel = currentLevel + 1;
+        break;
+      case 'Medium':
+        profileController.user = profileController.user.copyWith(
+            currentMediumLevel: profileController.user.currentMediumLevel + 1,
+            score: profileController.user.score + 10,
+            isHardLevelActive:
+                profileController.user.score > 200 ? true : false,
+                currentHardLevel: profileController.user.currentHardLevel == 0
+              ? 1
+              : profileController.user.currentHardLevel,
+        );
+
+        profileController.updateUserProfile(profileController.user);
+        currentLevel = currentLevel + 1;
+        break;
+      case 'Hard':
+        profileController.user = profileController.user.copyWith(
+          currentHardLevel: profileController.user.currentHardLevel + 1,
+          score: profileController.user.score + 10,
+        );
+
+        profileController.updateUserProfile(profileController.user);
+        currentLevel = currentLevel + 1;
+        break;
+      default:
+    }
   }
 }

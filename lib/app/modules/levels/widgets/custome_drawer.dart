@@ -6,7 +6,7 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // final theme = Theme.of(context);
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -23,9 +23,18 @@ class CustomDrawer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text('Drawer Header'),
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: const Image(
+                          image: AssetImage('assets/images/Boy Study.png'))),
+                ),
                 GestureDetector(
-                    onTap: () => Get.back(), child: const Icon(Icons.close))
+                  onTap: () => Get.back(),
+                  child: const Icon(Icons.close),
+                )
               ],
             ),
           ),

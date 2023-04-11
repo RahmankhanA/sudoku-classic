@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:sudoku_classic/app/data/colors/level_color.dart';
 
+import 'bubble.dart';
 import 'mapline_painter1.dart';
 import 'mapline_painter2.dart';
 
 const divisor = 6;
 
 class GameLevelMap extends StatefulWidget {
-  List<Widget> levelWidgets;
-  GameLevelMap({required this.levelWidgets, super.key});
+  final int currentLevel;
+  final String gameType;
+
+  const GameLevelMap({
+    super.key,
+    required this.currentLevel,
+    required this.gameType,
+  });
   @override
   State<StatefulWidget> createState() => _GameLevelMapState();
 }
@@ -16,9 +23,10 @@ class GameLevelMap extends StatefulWidget {
 class _GameLevelMapState extends State<GameLevelMap> {
   List<List<Widget>> paired = [];
 
-  double stroke = 80.0;
-  double spaceCurve = 100.0;
+  double stroke = 50.0;
+  double spaceCurve = 130.0;
   int itemCount = 50;
+  // int itemCount = 500000;
 
   late MapLinePainter1 mapLinePainter1;
   late MapLinePainter2 mapLinePainter2;
@@ -30,8 +38,10 @@ class _GameLevelMapState extends State<GameLevelMap> {
     // levelWidgets = widget.levelWidgets;
 
     // levelWidgets = levelWidgets.reversed.toList();
-    mapLinePainter1 = MapLinePainter1(LevelColor.backgroundColor, stroke);
-    mapLinePainter2 = MapLinePainter2(LevelColor.backgroundColor, stroke);
+    mapLinePainter1 =
+        MapLinePainter1(LevelColor.levelMapBackgroundColor, stroke);
+    mapLinePainter2 =
+        MapLinePainter2(LevelColor.levelMapBackgroundColor, stroke);
     _controller = ScrollController();
     _goToCurrentLevel();
     // _controller.animateTo(78.0,
@@ -41,6 +51,7 @@ class _GameLevelMapState extends State<GameLevelMap> {
   @override
   Widget build(BuildContext context) {
     // log("length of list :${levelWidgets.length}");
+    // log(Theme.of(context).focusColor.toString());
     return ListView.builder(
       controller: _controller,
       itemCount: (itemCount).ceil(),
@@ -49,7 +60,7 @@ class _GameLevelMapState extends State<GameLevelMap> {
         index = itemCount - index;
 
         return SizedBox(
-          key: GlobalObjectKey(index),
+          // key: GlobalObjectKey(index),
           height: spaceCurve,
           child: Stack(
             children: [
@@ -63,12 +74,14 @@ class _GameLevelMapState extends State<GameLevelMap> {
                 top: spaceCurve / divisor,
                 bottom: spaceCurve / divisor,
                 child: Center(
-                  // child: (index * 2 + 1) < itemCount
-                  //     ? Text("Level ${itemCount - index * 2 + 1}")
-                  //     : Container(),
-
-                  // child: levelWidgets[index * 2],
-                  child: Text("Level ${index * 2}"),
+                  child: MyBubble(
+                    radius: 50,
+                    color: Colors.blue,
+                    number: index * 2,
+                    currentLevel: widget.currentLevel,
+                    isLocked: false,
+                    gameType: widget.gameType,
+                  ),
                 ),
               ),
               Positioned(
@@ -77,12 +90,15 @@ class _GameLevelMapState extends State<GameLevelMap> {
                 top: spaceCurve / divisor,
                 bottom: spaceCurve / divisor,
                 child: Center(
-                  // child: (index * 2 + 1) < levelWidgets.length
-                  // ? levelWidgets[index * 2 + 1]
-                  // : Container(),
-
-                  child: Text("Level ${index * 2 - 1} "),
-                  // paired[index].length > 1 ? paired[index][1] : Container(),
+                  child: MyBubble(
+                    radius: 50,
+                    color: Colors.blue,
+                    number: index * 2 - 1,
+                    currentLevel: widget.currentLevel,
+                    isLocked: true,
+                    gameType: widget.gameType,
+                  ),
+                  // child: Text("Level ${index * 2 - 1} "),
                 ),
               )
             ],
@@ -93,13 +109,11 @@ class _GameLevelMapState extends State<GameLevelMap> {
   }
 
   void _goToCurrentLevel() async {
-    await Future.delayed(const Duration(seconds: 4));
-    Scrollable.ensureVisible(const GlobalObjectKey(34).currentContext!,
-        duration: const Duration(seconds: 3), // duration for scrolling time
-        alignment: .5, // 0 mean, scroll to the top, 0.5 mean, half
+    await Future.delayed(const Duration(seconds: 1));
+
+    _controller.animateTo(
+        spaceCurve * (itemCount - widget.currentLevel / 2 - 3),
+        duration: const Duration(seconds: 1),
         curve: Curves.easeInOutQuart);
-    // _controller.jumpTo(32.0);
-    // _controller.animateTo(0,
-    //     duration: const Duration(seconds: 1), curve: Curves.easeInOutQuart);
   }
 }
