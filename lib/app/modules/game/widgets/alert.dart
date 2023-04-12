@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sudoku_classic/app/modules/game/controllers/game_controller.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/material_dialogs.dart';
 
 class CustomAlert {
   static void showWrongInputDialog({required int life}) {
@@ -25,7 +28,7 @@ class CustomAlert {
         });
   }
 
-  static void gameOver({required GameController controller}) {
+  static void gameOver() {
     showCupertinoDialog(
         context: Get.context!,
         builder: (context) {
@@ -38,7 +41,7 @@ class CustomAlert {
               CupertinoDialogAction(
                 child: const Text('Try Again'),
                 onPressed: () {
-                  controller.generateSudoku(emptySpace: 18);
+                  // controller.generateSudoku(emptySpace: 18);
                   Navigator.of(context).pop();
                 },
               )
@@ -47,26 +50,41 @@ class CustomAlert {
         });
   }
 
-  static void gameWon({required GameController controller}) {
+  static Future<void> gameWon() {
+    return Dialogs.materialDialog(
+      color: Theme.of(Get.context!).scaffoldBackgroundColor,
+      msg: 'Congratulations, you won 500 points',
+      title: 'Congratulations',
+      lottieBuilder: Lottie.asset(
+        'assets/animation/levelComplete2.json',
+        fit: BoxFit.contain,
+      ),
+      dialogWidth: kIsWeb ? 0.3 : null,
+      context: Get.context!,
+      barrierDismissible: false,
+      // barrierLabel: "some text",
 
-    showCupertinoDialog(
-        context: Get.context!,
-        builder: (context) {
-          // sound stuff error
-          // SoundEffect.stuffError();
-          return CupertinoAlertDialog(
-            title: const Text("Game Over"),
-            content: const Text("\nYou are winner of this game "),
-            actions: [
-              CupertinoDialogAction(
-                child: const Text('Play Next'),
-                onPressed: () {
-                  controller.generateSudoku(emptySpace: 18);
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          );
-        });
+      actions: [
+
+        ElevatedButton.icon(
+          onPressed: () {
+            Get.back();
+            Get.back();
+
+          },
+          label: const Text('Back'),
+          // icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.backspace),
+
+        ),
+         ElevatedButton.icon(
+          onPressed: () {
+            Get.back();
+          },
+          label: const Text('Play Next'),
+          icon: const Icon(Icons.done),
+        ),
+      ],
+    );
   }
 }

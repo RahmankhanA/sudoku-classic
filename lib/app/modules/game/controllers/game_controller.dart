@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+// import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/modules/game/model/sudoku_model.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_service.dart';
@@ -13,7 +14,8 @@ class GameController extends GetxController {
   // for showing the timer
   Timer? _timer;
   int remainingSeconds = 1;
-  final time = '00.00'.obs;
+  bool isTimerPaused = true;
+  String time = '00.00';
   String gameType = '';
   late int currentLevel;
 
@@ -36,7 +38,7 @@ class GameController extends GetxController {
 // to store the hint | tips | next Move
   List<Map<String, int>> hint = [];
 
-  generateSudoku({required int emptySpace}) {
+  generateSudoku({required int emptySpace}) async {
     // clearing the hint list
     hint.clear();
 
@@ -44,6 +46,11 @@ class GameController extends GetxController {
     lifeRemain.value = 5;
 
     // starting timer
+    // try {
+    //   await Isolate.spawn<int>(_startTimer, 0);
+    // } catch (e) {
+    //   log("exception $e");
+    // }
     _startTimer(0);
 
     // initializing number count
@@ -66,19 +73,23 @@ class GameController extends GetxController {
 
   @override
   void onInit() {
-    // profileController = Get.find<ProfileController>();
     // creating initial sudoku
     gameType = Get.arguments['Type'];
     currentLevel = Get.arguments['gameLevel'];
-    generateSudoku(emptySpace: gameType=='Easy'?18:gameType=='Medium'?27:36);
+    generateSudoku(
+        emptySpace: gameType == 'Easy'
+            ? 18
+            : gameType == 'Medium'
+                ? 27
+                : 36);
+
     super.onInit();
   }
 
   @override
   void onReady() {
-    _startTimer(0);
-    log("${Get.arguments['Type']} Level ${Get.arguments['gameLevel']}");
-
+    // TODO: implement onReady
+    // CustomAlert.gameWon();
     super.onReady();
   }
 
@@ -92,14 +103,17 @@ class GameController extends GetxController {
 
   _startTimer(int seconds) {
     // creating duration of 1 second
+    log(seconds.toString());
     const duration = Duration(seconds: 1);
     remainingSeconds = seconds;
+    // isTimerPaused = false;
     _timer = Timer.periodic(duration, (Timer timer) {
       int minutes = remainingSeconds ~/ 60;
       int seconds = (remainingSeconds % 60);
-      time.value =
+      time =
           "${minutes.toString().padLeft(2, "0")}:${seconds.toString().padLeft(2, "0")}";
       remainingSeconds++;
+      update(['timer']);
     });
   }
 
@@ -129,8 +143,9 @@ class GameController extends GetxController {
           puzzleBoard: puzzle, solution: sudokuGenerator.newSudokuSolved);
       if (res) {
         increaseLevel();
+        update(['level']);
         // showing the solved puzzle alert
-        CustomAlert.gameWon(controller: this);
+        CustomAlert.gameWon();
       }
       // updating the UI
       update();
@@ -196,7 +211,8 @@ class GameController extends GetxController {
       if (res) {
         increaseLevel();
         // showing the solved puzzle alert
-        CustomAlert.gameWon(controller: this);
+        update(['level']);
+        CustomAlert.gameWon();
       }
 
       log(puzzle[rowSelected][colSelected].toString());
@@ -255,7 +271,7 @@ class GameController extends GetxController {
       // checking that life is available or not
       if (life.value == 0) {
         // showing the game over alert
-        CustomAlert.gameOver(controller: this);
+        CustomAlert.gameOver();
       } else {
         // decreasing the life
         life.value--;
@@ -307,11 +323,10 @@ class GameController extends GetxController {
         break;
       case 'Medium':
         profileController.user = profileController.user.copyWith(
-            currentMediumLevel: profileController.user.currentMediumLevel + 1,
-            score: profileController.user.score + 10,
-            isHardLevelActive:
-                profileController.user.score > 200 ? true : false,
-                currentHardLevel: profileController.user.currentHardLevel == 0
+          currentMediumLevel: profileController.user.currentMediumLevel + 1,
+          score: profileController.user.score + 10,
+          isHardLevelActive: profileController.user.score > 200 ? true : false,
+          currentHardLevel: profileController.user.currentHardLevel == 0
               ? 1
               : profileController.user.currentHardLevel,
         );
@@ -330,5 +345,23 @@ class GameController extends GetxController {
         break;
       default:
     }
+  }
+
+  void pauseTimer() {
+    // _timer!.isActive;
+    _timer!.cancel();
+    isTimerPaused = true;
+    log('timer paused');
+    update(['timer']);
+  }
+
+  void playTimer() {
+    // _timer!.isActive;
+    var dat = time.split(':');
+    int sec = int.parse(dat[0]) * 60 + int.parse(dat[1]);
+    // Isolate.spawn(_startTimer, sec);
+    isTimerPaused = false;
+    log('timer started');
+    update(['timer']);
   }
 }

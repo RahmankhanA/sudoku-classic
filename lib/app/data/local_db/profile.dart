@@ -5,7 +5,7 @@ import 'package:sudoku_classic/app/modules/profile/model/profile_model.dart';
 
 class ProfileDataBase {
   String key = "profileKey";
-  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+  // final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 
   Future<void> setUserProfile(ProfileModel user) async {
     final sharedPreferences = await SharedPreferences.getInstance();

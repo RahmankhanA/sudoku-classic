@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/data/colors/level_color.dart';
@@ -20,6 +18,7 @@ class GameView extends GetView<GameController> {
       appBar: AppBar(
         title: GetBuilder(
           init: controller,
+          id: 'level',
           initState: (_) {},
           builder: (_) {
             return Text(
@@ -28,16 +27,23 @@ class GameView extends GetView<GameController> {
         ),
         centerTitle: true,
         actions: [
-          Obx(() => Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Text(
-                  controller.time.value,
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: GetBuilder(
+              init: controller,
+              id: 'timer',
+              initState: (_) {},
+              builder: (_) {
+                return Text(
+                  controller.time,
                   style: const TextStyle(
                     fontSize: 20,
                     color: Colors.white,
                   ),
-                ),
-              ))
+                );
+              },
+            ),
+          )
         ],
       ),
       body: Column(

@@ -9,7 +9,7 @@ class LevelsView extends GetView<LevelsController> {
   const LevelsView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     final size = MediaQuery.of(context).size;
     return DefaultTabController(
       initialIndex: 0,
@@ -17,7 +17,7 @@ class LevelsView extends GetView<LevelsController> {
       animationDuration: const Duration(seconds: 1),
       child: Scaffold(
         appBar: AppBar(
-          // leading: Icon(Icons.ham),
+
           bottom: const TabBar(
             tabs: [
               Tab(
@@ -47,7 +47,7 @@ class LevelsView extends GetView<LevelsController> {
                       currentLevel:
                           controller.profileController.user.currentEasyLevel,
                     ),
-                    controller.profileController.user.currentHardLevel > 5
+                    controller.profileController.user.currentEasyLevel > 5
                         ? Padding(
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Align(

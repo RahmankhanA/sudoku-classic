@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:sudoku_classic/app/modules/game/model/sudoku_model.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_excepttion_base.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_utility.dart';
@@ -50,7 +48,8 @@ class SudokuGenerator {
     }
     _uniqueSolution = uniqueSolution;
     _emptySquares = emptySquares;
-    _sudoku = List.generate(9, (i) => List.generate(9, (j) => SudokuModel(value: 0)));
+    _sudoku =
+        List.generate(9, (i) => List.generate(9, (j) => SudokuModel(value: 0)));
     _fillValues();
   }
 
@@ -100,8 +99,6 @@ class SudokuGenerator {
     for (var i = 0; i < 3; i++) {
       for (var j = 0; j < 3; j++) {
         if (_sudoku[rowStart + i][columnStart + j].value == number) {
-
-
           return false;
         }
       }
@@ -121,7 +118,6 @@ class SudokuGenerator {
   bool _unUsedInRow(int i, int number) {
     for (var j = 0; j < 9; j++) {
       if (_sudoku[i][j].value == number) {
-
         return false;
       }
     }
@@ -131,8 +127,6 @@ class SudokuGenerator {
   bool _unUsedInColumn(int j, int number) {
     for (var i = 0; i < 9; i++) {
       if (_sudoku[i][j].value == number) {
-               
-
         return false;
       }
     }
