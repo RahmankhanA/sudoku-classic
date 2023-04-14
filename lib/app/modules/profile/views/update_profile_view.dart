@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
+// import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class UpdateProfileScreen extends StatelessWidget {
   const UpdateProfileScreen({Key? key}) : super(key: key);
@@ -12,8 +12,8 @@ class UpdateProfileScreen extends StatelessWidget {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(LineAwesomeIcons.angle_left)),
-        title: Text("tEditProfile",
+            icon: const Icon(Icons.arrow_back_ios)),
+        title: Text("EditProfile",
             style: Theme.of(context).textTheme.headlineMedium),
       ),
       body: SingleChildScrollView(
@@ -39,9 +39,9 @@ class UpdateProfileScreen extends StatelessWidget {
                       width: 35,
                       height: 35,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          ),
-                      child: const Icon(LineAwesomeIcons.camera,
+                        borderRadius: BorderRadius.circular(100),
+                      ),
+                      child: const Icon(Icons.camera,
                           color: Colors.black, size: 20),
                     ),
                   ),
@@ -55,29 +55,28 @@ class UpdateProfileScreen extends StatelessWidget {
                   children: [
                     TextFormField(
                       decoration: const InputDecoration(
-                          label: Text("tFullName"),
-                          prefixIcon: Icon(LineAwesomeIcons.user)),
+                          label: Text("FullName"),
+                          prefixIcon: Icon(Icons.person_3)),
                     ),
-                    const SizedBox(height:  20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: const InputDecoration(
-                          label: Text("tEmail"),
-                          prefixIcon: Icon(LineAwesomeIcons.envelope_1)),
+                          label: Text("Email"), prefixIcon: Icon(Icons.email)),
                     ),
-                    const SizedBox(height:  20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       decoration: const InputDecoration(
-                          label: Text("tPhoneNo"),
-                          prefixIcon: Icon(LineAwesomeIcons.phone)),
+                          label: Text("PhoneNo"),
+                          prefixIcon: Icon(Icons.phone)),
                     ),
-                    const SizedBox(height:  20),
+                    const SizedBox(height: 20),
                     TextFormField(
                       obscureText: true,
                       decoration: InputDecoration(
-                        label: const Text("tPassword"),
+                        label: const Text("Password"),
                         prefixIcon: const Icon(Icons.fingerprint),
                         suffixIcon: IconButton(
-                            icon: const Icon(LineAwesomeIcons.eye_slash),
+                            icon: const Icon(Icons.visibility),
                             onPressed: () {}),
                       ),
                     ),
@@ -93,8 +92,7 @@ class UpdateProfileScreen extends StatelessWidget {
                             // backgroundColor: tPrimar/yColor,
                             side: BorderSide.none,
                             shape: const StadiumBorder()),
-                        child: const Text("tEditProfile",
-                            style: TextStyle()),
+                        child: const Text("Edit Profile", style: TextStyle()),
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -105,11 +103,11 @@ class UpdateProfileScreen extends StatelessWidget {
                       children: [
                         const Text.rich(
                           TextSpan(
-                            text: "tJoined",
+                            text: "Joined",
                             style: TextStyle(fontSize: 12),
                             children: [
                               TextSpan(
-                                  text: "tJoinedAt",
+                                  text: " JoinedAt",
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 12))
@@ -125,7 +123,7 @@ class UpdateProfileScreen extends StatelessWidget {
                               foregroundColor: Colors.red,
                               shape: const StadiumBorder(),
                               side: BorderSide.none),
-                          child: const Text("tDelete"),
+                          child: const Text("Delete"),
                         ),
                       ],
                     )

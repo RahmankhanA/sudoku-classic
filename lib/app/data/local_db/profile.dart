@@ -23,9 +23,12 @@ class ProfileDataBase {
         currentEasyLevel: 1,
         currentHardLevel: 0,
         currentMediumLevel: 0,
+        currentExpertLevel: 0,
         isEasyLevelPause: false,
         isHardLevelActive: false,
         isHardLevelPause: false,
+        isExpertLevelPause: false,
+        isExpertLevelActive: false,
         isMediumLevelActive: false,
         isMediumLevelPause: false,
       );

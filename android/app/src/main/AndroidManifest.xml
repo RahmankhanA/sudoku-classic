@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sudoku_classic">
+     <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="Sudoku Classic"
         android:name="${applicationName}"
@@ -30,5 +31,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+             <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3404733564908964~3540393754"/>
     </application>
 </manifest>

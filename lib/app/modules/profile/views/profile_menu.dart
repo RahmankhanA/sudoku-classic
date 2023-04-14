@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 
 class ProfileMenuWidget extends StatelessWidget {
   const ProfileMenuWidget({
@@ -20,7 +19,7 @@ class ProfileMenuWidget extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
         ),
-        child: const Icon(LineAwesomeIcons.alternate_sort_amount_up),
+        child: const Icon(Icons.leaderboard),
       ),
       title: Text(title, style: Theme.of(context).textTheme.bodyLarge?.apply()),
       trailing: Text(

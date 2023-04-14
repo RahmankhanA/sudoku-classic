@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
 import 'package:sudoku_classic/app/modules/profile/views/profile_menu.dart';
 
 import '../controllers/profile_controller.dart';
@@ -13,7 +12,7 @@ class ProfileView extends GetView<ProfileController> {
       appBar: AppBar(
         leading: IconButton(
             onPressed: () => Get.back(),
-            icon: const Icon(LineAwesomeIcons.angle_left)),
+            icon: const Icon(Icons.arrow_back_ios)),
         title:
             Text("profile", style: Theme.of(context).textTheme.headlineMedium),
         centerTitle: true,
@@ -57,11 +56,6 @@ class ProfileView extends GetView<ProfileController> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: const Icon(
-                        LineAwesomeIcons.alternate_pencil,
-                        color: Colors.black,
-                        size: 20,
-                      ),
                     ),
                   ),
                 ],
@@ -91,6 +85,7 @@ class ProfileView extends GetView<ProfileController> {
               const SizedBox(height: 10),
 
               /// -- MENU
+
               ProfileMenuWidget(
                 title: "Easy",
                 level: controller.user.currentEasyLevel,

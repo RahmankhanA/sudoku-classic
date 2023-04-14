@@ -13,15 +13,18 @@ class ProfileModel {
   final int currentEasyLevel;
   final int currentMediumLevel;
   final int currentHardLevel;
+  final int currentExpertLevel;
 
   // to manage that is any level paused
   final bool isEasyLevelPause;
   final bool isMediumLevelPause;
   final bool isHardLevelPause;
+  final bool isExpertLevelPause;
 
   // to manage that Game Type is activeted or not
   final bool isMediumLevelActive;
   final bool isHardLevelActive;
+  final bool isExpertLevelActive;
 
   ProfileModel({
     required this.score,
@@ -29,12 +32,17 @@ class ProfileModel {
     required this.currentEasyLevel,
     required this.currentMediumLevel,
     required this.currentHardLevel,
+    required this.currentExpertLevel,
     required this.isEasyLevelPause,
     required this.isMediumLevelPause,
     required this.isHardLevelPause,
+    required this.isExpertLevelPause,
     required this.isMediumLevelActive,
     required this.isHardLevelActive,
+    required this.isExpertLevelActive,
   });
+
+
 
   ProfileModel copyWith({
     int? score,
@@ -42,11 +50,14 @@ class ProfileModel {
     int? currentEasyLevel,
     int? currentMediumLevel,
     int? currentHardLevel,
+    int? currentExpertLevel,
     bool? isEasyLevelPause,
     bool? isMediumLevelPause,
     bool? isHardLevelPause,
+    bool? isExpertLevelPause,
     bool? isMediumLevelActive,
     bool? isHardLevelActive,
+    bool? isExpertLevelActive,
   }) {
     return ProfileModel(
       score: score ?? this.score,
@@ -54,11 +65,14 @@ class ProfileModel {
       currentEasyLevel: currentEasyLevel ?? this.currentEasyLevel,
       currentMediumLevel: currentMediumLevel ?? this.currentMediumLevel,
       currentHardLevel: currentHardLevel ?? this.currentHardLevel,
+      currentExpertLevel: currentExpertLevel ?? this.currentExpertLevel,
       isEasyLevelPause: isEasyLevelPause ?? this.isEasyLevelPause,
       isMediumLevelPause: isMediumLevelPause ?? this.isMediumLevelPause,
       isHardLevelPause: isHardLevelPause ?? this.isHardLevelPause,
+      isExpertLevelPause: isExpertLevelPause ?? this.isExpertLevelPause,
       isMediumLevelActive: isMediumLevelActive ?? this.isMediumLevelActive,
       isHardLevelActive: isHardLevelActive ?? this.isHardLevelActive,
+      isExpertLevelActive: isExpertLevelActive ?? this.isExpertLevelActive,
     );
   }
 
@@ -69,11 +83,14 @@ class ProfileModel {
       'currentEasyLevel': currentEasyLevel,
       'currentMediumLevel': currentMediumLevel,
       'currentHardLevel': currentHardLevel,
+      'currentExpertLevel': currentExpertLevel,
       'isEasyLevelPause': isEasyLevelPause,
       'isMediumLevelPause': isMediumLevelPause,
       'isHardLevelPause': isHardLevelPause,
+      'isExpertLevelPause': isExpertLevelPause,
       'isMediumLevelActive': isMediumLevelActive,
       'isHardLevelActive': isHardLevelActive,
+      'isExpertLevelActive': isExpertLevelActive,
     };
   }
 
@@ -84,11 +101,14 @@ class ProfileModel {
       currentEasyLevel: map['currentEasyLevel'] as int,
       currentMediumLevel: map['currentMediumLevel'] as int,
       currentHardLevel: map['currentHardLevel'] as int,
+      currentExpertLevel: map['currentExpertLevel'] as int,
       isEasyLevelPause: map['isEasyLevelPause'] as bool,
       isMediumLevelPause: map['isMediumLevelPause'] as bool,
       isHardLevelPause: map['isHardLevelPause'] as bool,
+      isExpertLevelPause: map['isExpertLevelPause'] as bool,
       isMediumLevelActive: map['isMediumLevelActive'] as bool,
       isHardLevelActive: map['isHardLevelActive'] as bool,
+      isExpertLevelActive: map['isExpertLevelActive'] as bool,
     );
   }
 
@@ -98,7 +118,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(score: $score, availableHint: $availableHint, currentEasyLevel: $currentEasyLevel, currentMediumLevel: $currentMediumLevel, currentHardLevel: $currentHardLevel, isEasyLevelPause: $isEasyLevelPause, isMediumLevelPause: $isMediumLevelPause, isHardLevelPause: $isHardLevelPause, isMediumLevelActive: $isMediumLevelActive, isHardLevelActive: $isHardLevelActive)';
+    return 'ProfileModel(score: $score, availableHint: $availableHint, currentEasyLevel: $currentEasyLevel, currentMediumLevel: $currentMediumLevel, currentHardLevel: $currentHardLevel, currentExpertLevel: $currentExpertLevel, isEasyLevelPause: $isEasyLevelPause, isMediumLevelPause: $isMediumLevelPause, isHardLevelPause: $isHardLevelPause, isExpertLevelPause: $isExpertLevelPause, isMediumLevelActive: $isMediumLevelActive, isHardLevelActive: $isHardLevelActive, isExpertLevelActive: $isExpertLevelActive)';
   }
 
   @override
@@ -111,11 +131,14 @@ class ProfileModel {
       other.currentEasyLevel == currentEasyLevel &&
       other.currentMediumLevel == currentMediumLevel &&
       other.currentHardLevel == currentHardLevel &&
+      other.currentExpertLevel == currentExpertLevel &&
       other.isEasyLevelPause == isEasyLevelPause &&
       other.isMediumLevelPause == isMediumLevelPause &&
       other.isHardLevelPause == isHardLevelPause &&
+      other.isExpertLevelPause == isExpertLevelPause &&
       other.isMediumLevelActive == isMediumLevelActive &&
-      other.isHardLevelActive == isHardLevelActive;
+      other.isHardLevelActive == isHardLevelActive &&
+      other.isExpertLevelActive == isExpertLevelActive;
   }
 
   @override
@@ -125,10 +148,13 @@ class ProfileModel {
       currentEasyLevel.hashCode ^
       currentMediumLevel.hashCode ^
       currentHardLevel.hashCode ^
+      currentExpertLevel.hashCode ^
       isEasyLevelPause.hashCode ^
       isMediumLevelPause.hashCode ^
       isHardLevelPause.hashCode ^
+      isExpertLevelPause.hashCode ^
       isMediumLevelActive.hashCode ^
-      isHardLevelActive.hashCode;
+      isHardLevelActive.hashCode ^
+      isExpertLevelActive.hashCode;
   }
 }

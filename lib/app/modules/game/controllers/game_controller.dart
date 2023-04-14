@@ -3,6 +3,7 @@ import 'dart:developer';
 
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
+import 'package:sudoku_classic/app/data/controllers/ads_controller.dart';
 import 'package:sudoku_classic/app/modules/game/model/sudoku_model.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_service.dart';
 import 'package:sudoku_classic/app/modules/game/widgets/alert.dart';
@@ -10,6 +11,7 @@ import 'package:sudoku_classic/app/modules/profile/controllers/profile_controlle
 
 class GameController extends GetxController {
   ProfileController profileController = Get.find<ProfileController>();
+  AdsController adsController = Get.find<AdsController>();
 
   // for showing the timer
   Timer? _timer;
@@ -20,7 +22,7 @@ class GameController extends GetxController {
   late int currentLevel;
 
 // for showing the remaining chance
-  RxInt lifeRemain = 5.obs;
+  RxInt lifeRemain = 3.obs;
 
   // to highlight the selected row and column
   var colSelected = -1.obs;
@@ -38,20 +40,20 @@ class GameController extends GetxController {
 // to store the hint | tips | next Move
   List<Map<String, int>> hint = [];
 
-  generateSudoku({required int emptySpace}) async {
+  generateSudoku() async {
     // clearing the hint list
     hint.clear();
 
     // initilizing life
-    lifeRemain.value = 5;
+    lifeRemain.value = 3;
 
-    // starting timer
-    // try {
-    //   await Isolate.spawn<int>(_startTimer, 0);
-    // } catch (e) {
-    //   log("exception $e");
-    // }
-    _startTimer(0);
+    int emptySpace = gameType == 'Easy'
+        ? 18
+        : gameType == 'Medium'
+            ? 27
+            : gameType == 'Hard'
+                ? 36
+                : 45;
 
     // initializing number count
     remainingNumberCount = [9, 9, 9, 9, 9, 9, 9, 9, 9];
@@ -61,6 +63,10 @@ class GameController extends GetxController {
 
     puzzle = sudokuGenerator.newSudoku;
 
+    if (time != '00.00') {
+      _timer!.cancel();
+    }
+    _startTimer(0);
     // calculating remaining number count
     calculateRemaningNumberCount();
 
@@ -76,28 +82,20 @@ class GameController extends GetxController {
     // creating initial sudoku
     gameType = Get.arguments['Type'];
     currentLevel = Get.arguments['gameLevel'];
-    generateSudoku(
-        emptySpace: gameType == 'Easy'
-            ? 18
-            : gameType == 'Medium'
-                ? 27
-                : 36);
+    generateSudoku();
 
     super.onInit();
   }
 
   @override
   void onReady() {
-    // TODO: implement onReady
     // CustomAlert.gameWon();
     super.onReady();
   }
 
   @override
   void onClose() {
-    if (_timer != null) {
-      _timer!.cancel();
-    }
+    _timer!.cancel();
     super.onClose();
   }
 
@@ -145,9 +143,14 @@ class GameController extends GetxController {
         increaseLevel();
         update(['level']);
         // showing the solved puzzle alert
-        CustomAlert.gameWon();
+        CustomAlert.gameWon(controller: this);
       }
       // updating the UI
+      profileController.user = profileController.user.copyWith(
+        availableHint: 10,
+        // availableHint: profileController.user.availableHint - 1,
+      );
+      update(['hint']);
       update();
     }
   }
@@ -201,8 +204,7 @@ class GameController extends GetxController {
       // decreasing the remaining number count
       remainingNumberCount[value - 1]--;
 
-      log((sudokuGenerator.newSudoku == sudokuGenerator.newSudokuSolved)
-          .toString());
+
 
       // checking that is puzzle soved or not
 
@@ -212,7 +214,7 @@ class GameController extends GetxController {
         increaseLevel();
         // showing the solved puzzle alert
         update(['level']);
-        CustomAlert.gameWon();
+        CustomAlert.gameWon(controller: this);
       }
 
       log(puzzle[rowSelected][colSelected].toString());
@@ -269,9 +271,9 @@ class GameController extends GetxController {
       puzzle[row][column].isValid = false;
 
       // checking that life is available or not
-      if (life.value == 0) {
+      if (life.value == 1) {
         // showing the game over alert
-        CustomAlert.gameOver();
+        CustomAlert.gameOver(controller: this);
       } else {
         // decreasing the life
         life.value--;
@@ -297,7 +299,7 @@ class GameController extends GetxController {
         }
       }
     }
-    log("unsolved");
+    // log("unsolved");
     return true;
   }
 
@@ -305,31 +307,35 @@ class GameController extends GetxController {
     switch (gameType) {
       case 'Easy':
         profileController.user = profileController.user.copyWith(
-          currentEasyLevel: profileController.user.currentEasyLevel + 1,
-          score: profileController.user.score + 10,
-          isMediumLevelActive:
-              profileController.user.score > 100 ? true : false,
-          currentMediumLevel: profileController.user.currentMediumLevel == 0
-              ? 1
-              : profileController.user.currentMediumLevel,
-          isHardLevelActive: profileController.user.score > 200 ? true : false,
-          currentHardLevel: profileController.user.currentHardLevel == 0
-              ? 1
-              : profileController.user.currentHardLevel,
-        );
+            currentEasyLevel: profileController.user.currentEasyLevel + 1,
+            score: profileController.user.score + 10,
+            // isMediumLevelActive:
+            //     profileController.user.score > 100 ? true : false,
+            currentMediumLevel: profileController.user.score == 50
+                ? 1
+                : profileController.user.currentMediumLevel,
+            // isHardLevelActive: profileController.user.score > 200 ? true : false,
+            currentHardLevel: profileController.user.score == 100
+                ? 1
+                : profileController.user.currentHardLevel,
+            currentExpertLevel: profileController.user.score == 150
+                ? 1
+                : profileController.user.currentExpertLevel);
 
         profileController.updateUserProfile(profileController.user);
         currentLevel = currentLevel + 1;
         break;
       case 'Medium':
         profileController.user = profileController.user.copyWith(
-          currentMediumLevel: profileController.user.currentMediumLevel + 1,
-          score: profileController.user.score + 10,
-          isHardLevelActive: profileController.user.score > 200 ? true : false,
-          currentHardLevel: profileController.user.currentHardLevel == 0
-              ? 1
-              : profileController.user.currentHardLevel,
-        );
+            currentMediumLevel: profileController.user.currentMediumLevel + 1,
+            score: profileController.user.score + 10,
+            // isHardLevelActive: profileController.user.score > 200 ? true : false,
+            currentHardLevel: profileController.user.score == 10
+                ? 1
+                : profileController.user.currentHardLevel,
+            currentExpertLevel: profileController.user.score == 150
+                ? 1
+                : profileController.user.currentExpertLevel);
 
         profileController.updateUserProfile(profileController.user);
         currentLevel = currentLevel + 1;
@@ -337,6 +343,18 @@ class GameController extends GetxController {
       case 'Hard':
         profileController.user = profileController.user.copyWith(
           currentHardLevel: profileController.user.currentHardLevel + 1,
+          score: profileController.user.score + 10,
+          currentExpertLevel: profileController.user.score == 150
+              ? 1
+              : profileController.user.currentExpertLevel,
+        );
+
+        profileController.updateUserProfile(profileController.user);
+        currentLevel = currentLevel + 1;
+        break;
+      case 'Expert':
+        profileController.user = profileController.user.copyWith(
+          currentExpertLevel: profileController.user.currentExpertLevel + 1,
           score: profileController.user.score + 10,
         );
 

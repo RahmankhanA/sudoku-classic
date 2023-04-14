@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:sudoku_classic/app/data/controllers/ads_controller.dart';
 import 'package:sudoku_classic/app/data/controllers/theme_controller.dart';
 import 'package:sudoku_classic/app/data/local_db/theme_db.dart';
 import 'package:sudoku_classic/app/data/theme/theme_color_1.dart';
@@ -14,6 +15,7 @@ Future<void> main() async {
   ThemeController themeController = Get.put(ThemeController());
   Get.put(ProfileController());
   Get.put(LevelsController());
+  Get.put(AdsController());
   themeController.isLight.value = (await ThemeDataBase().getTheme());
 
   Get.put(HomeController());

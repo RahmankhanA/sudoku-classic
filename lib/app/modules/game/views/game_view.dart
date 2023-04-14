@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sudoku_classic/app/data/colors/level_color.dart';
 
 // import 'package:sudoku_classic/app/modules/game/sudoku.dart';
@@ -56,7 +57,7 @@ class GameView extends GetView<GameController> {
               children: [
                 ElevatedButton.icon(
                   onPressed: () {
-                    controller.generateSudoku(emptySpace: 18);
+                    controller.generateSudoku();
                   },
                   icon: const Icon(Icons.refresh),
                   label: const Text("Reset"),
@@ -66,7 +67,18 @@ class GameView extends GetView<GameController> {
                     controller.fillNextHint();
                   },
                   icon: const Icon(Icons.lightbulb_outline_rounded),
-                  label: const Text("Hint"),
+                  label: GetBuilder(
+                    init: controller,
+                    id: 'hint',
+                    initState: (_) {},
+                    builder: (_) {
+                      return Text(
+                        "${controller.profileController.user.availableHint} ",
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.blue),
+                      );
+                    },
+                  ),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {},
@@ -83,86 +95,87 @@ class GameView extends GetView<GameController> {
             height: 20,
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GetBuilder(
-              init: controller,
-              initState: (_) {},
-              builder: (_) {
-                return Table(
-                  border: TableBorder.all(
-                      // color: Colors.deepPurple
-                      ),
-                  children: List.generate(
-                    9,
-                    (rowIndex) => TableRow(
-                      children: List.generate(
-                        9,
-                        (colIndex) => GestureDetector(
-                          onTap: () {
-                            controller.rowSelected = rowIndex;
-                            controller.colSelected = colIndex;
-                            controller.update();
-                          },
-                          // onDoubleTap: () {
-                          //   // if(controller.sudokuGenerator.newSudoku[])
-                          //   print(controller.sudokuGenerator.newSudoku[rowIndex][colIndex]);
-                          // },
-                          child: Container(
-                            height: 37,
-                            width: 30,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5.0),
-                                border: Border.all(),
-                                color: (controller.colSelected == colIndex &&
-                                        controller.rowSelected == rowIndex)
-                                    ? Colors.brown[700]
-                                    : (controller.colSelected == colIndex ||
-                                            controller.rowSelected == rowIndex)
-                                        ? theme.primaryColorDark
-                                        // ? Colors.brown
-                                        : rowIndex < 3 &&
-                                                    (colIndex < 3 ||
-                                                        colIndex > 5) ||
-                                                (rowIndex > 2 &&
-                                                    rowIndex < 6 &&
-                                                    colIndex > 2 &&
-                                                    colIndex < 6) ||
-                                                (rowIndex > 5 &&
-                                                    ((colIndex < 3 ||
-                                                        colIndex > 5)))
-                                            // ? Colors.deepPurple
-                                            ? theme.focusColor
-                                            : LevelColor.backgroundColor),
-                            // row<3 &&( col<3 || col>5)/
-                            child: Center(
-                              child: Text(
-                                controller.puzzle[rowIndex][colIndex].value == 0
-                                    ? " "
-                                    : controller
-                                        .puzzle[rowIndex][colIndex].value
-                                        .toString(),
-                                style: TextStyle(
-                                  color: !controller
-                                          .puzzle[rowIndex][colIndex].isValid
-                                      ? Colors.red
-                                      : controller.puzzle[rowIndex][colIndex]
-                                              .isEditable
-                                          ? const Color.fromARGB(
-                                              255, 4, 242, 178)
-                                          : Colors.white,
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                border: TableBorder.all(
+                    // color: Colors.deepPurple
+                    ),
+                children: List.generate(
+                  9,
+                  (rowIndex) => TableRow(
+                    children: List.generate(
+                      9,
+                      (colIndex) => GetBuilder(
+                        init: controller,
+                        initState: (_) {},
+                        builder: (_) {
+                          return GestureDetector(
+                            onTap: () {
+                              controller.rowSelected = rowIndex;
+                              controller.colSelected = colIndex;
+                              controller.update();
+                            },
+                            // onDoubleTap: () {
+                            //   // if(controller.sudokuGenerator.newSudoku[])
+                            //   print(controller.sudokuGenerator.newSudoku[rowIndex][colIndex]);
+                            // },
+                            child: Container(
+                              height: 37,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5.0),
+                                  border: Border.all(),
+                                  color: (controller.colSelected == colIndex &&
+                                          controller.rowSelected == rowIndex)
+                                      ? Colors.brown[700]
+                                      : (controller.colSelected == colIndex ||
+                                              controller.rowSelected ==
+                                                  rowIndex)
+                                          ? theme.primaryColorDark
+                                          // ? Colors.brown
+                                          : rowIndex < 3 &&
+                                                      (colIndex < 3 ||
+                                                          colIndex > 5) ||
+                                                  (rowIndex > 2 &&
+                                                      rowIndex < 6 &&
+                                                      colIndex > 2 &&
+                                                      colIndex < 6) ||
+                                                  (rowIndex > 5 &&
+                                                      ((colIndex < 3 ||
+                                                          colIndex > 5)))
+                                              // ? Colors.deepPurple
+                                              ? theme.focusColor
+                                              : LevelColor.backgroundColor),
+                              // row<3 &&( col<3 || col>5)/
+                              child: Center(
+                                child: Text(
+                                  controller.puzzle[rowIndex][colIndex].value ==
+                                          0
+                                      ? " "
+                                      : controller
+                                          .puzzle[rowIndex][colIndex].value
+                                          .toString(),
+                                  style: TextStyle(
+                                    color: !controller
+                                            .puzzle[rowIndex][colIndex].isValid
+                                        ? Colors.red
+                                        : controller.puzzle[rowIndex][colIndex]
+                                                .isEditable
+                                            ? const Color.fromARGB(
+                                                255, 4, 242, 178)
+                                            : Colors.white,
+                                  ),
                                 ),
+                                // child: Text(' '),
                               ),
-                              // child: Text(' '),
                             ),
-                          ),
-                        ),
+                          );
+                        },
                       ),
                     ),
                   ),
-                );
-              },
-            ),
-          ),
+                ),
+              )),
           const SizedBox(
             height: 20,
           ),
@@ -235,8 +248,28 @@ class GameView extends GetView<GameController> {
                 },
                 itemCount: 10),
           ),
+
+          // GetBuilder(builder: )
         ],
       ),
+      bottomSheet: GetBuilder(
+          init: controller.adsController,
+          initState: (_) {},
+          id: 'ads',
+          builder: (_) {
+            return controller.adsController.isHomePageBannerLoaded
+                ? SizedBox(
+                    // width: controller.adsController.homePageBanner.size.width.toDouble(),
+                    // width: MediaQuery.of(context).size.width,
+                    height: controller.adsController.homePageBanner.size.height
+                        .toDouble(),
+                    child:
+                        AdWidget(ad: controller.adsController.homePageBanner),
+                  )
+                : Container(
+                  height: 0,
+                );
+          }),
     );
   }
 }
