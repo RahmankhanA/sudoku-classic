@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class SudokuModel {
    int value;
@@ -40,4 +42,24 @@ class SudokuModel {
 
   @override
   int get hashCode => value.hashCode ;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'value': value,
+      'isEditable': isEditable,
+      'isValid': isValid,
+    };
+  }
+
+  factory SudokuModel.fromMap(Map<String, dynamic> map) {
+    return SudokuModel(
+      value: map['value'] as int,
+      isEditable: map['isEditable'] as bool,
+      isValid: map['isValid'] as bool,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory SudokuModel.fromJson(String source) => SudokuModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }

@@ -4,6 +4,8 @@ import '../modules/game/bindings/game_binding.dart';
 import '../modules/game/views/game_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/interconnectivity/bindings/interconnectivity_binding.dart';
+import '../modules/interconnectivity/views/interconnectivity_view.dart';
 import '../modules/levels/bindings/levels_binding.dart';
 import '../modules/levels/views/levels_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -50,6 +52,11 @@ class AppPages {
       name: _Paths.GAME,
       page: () => const GameView(),
       binding: GameBinding(),
+    ),
+    GetPage(
+      name: _Paths.INTERCONNECTIVITY,
+      page: () =>  ConfirmationDialogForInternet(message: '',onConfirm: (){}),
+      binding: InterconnectivityBinding(),
     ),
   ];
 }

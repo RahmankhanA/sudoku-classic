@@ -42,8 +42,6 @@ class ProfileModel {
     required this.isExpertLevelActive,
   });
 
-
-
   ProfileModel copyWith({
     int? score,
     int? availableHint,
@@ -114,47 +112,11 @@ class ProfileModel {
 
   String toJson() => json.encode(toMap());
 
-  factory ProfileModel.fromJson(String source) => ProfileModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory ProfileModel.fromJson(String source) =>
+      ProfileModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
-    return 'ProfileModel(score: $score, availableHint: $availableHint, currentEasyLevel: $currentEasyLevel, currentMediumLevel: $currentMediumLevel, currentHardLevel: $currentHardLevel, currentExpertLevel: $currentExpertLevel, isEasyLevelPause: $isEasyLevelPause, isMediumLevelPause: $isMediumLevelPause, isHardLevelPause: $isHardLevelPause, isExpertLevelPause: $isExpertLevelPause, isMediumLevelActive: $isMediumLevelActive, isHardLevelActive: $isHardLevelActive, isExpertLevelActive: $isExpertLevelActive)';
-  }
-
-  @override
-  bool operator ==(covariant ProfileModel other) {
-    if (identical(this, other)) return true;
-
-    return
-      other.score == score &&
-      other.availableHint == availableHint &&
-      other.currentEasyLevel == currentEasyLevel &&
-      other.currentMediumLevel == currentMediumLevel &&
-      other.currentHardLevel == currentHardLevel &&
-      other.currentExpertLevel == currentExpertLevel &&
-      other.isEasyLevelPause == isEasyLevelPause &&
-      other.isMediumLevelPause == isMediumLevelPause &&
-      other.isHardLevelPause == isHardLevelPause &&
-      other.isExpertLevelPause == isExpertLevelPause &&
-      other.isMediumLevelActive == isMediumLevelActive &&
-      other.isHardLevelActive == isHardLevelActive &&
-      other.isExpertLevelActive == isExpertLevelActive;
-  }
-
-  @override
-  int get hashCode {
-    return score.hashCode ^
-      availableHint.hashCode ^
-      currentEasyLevel.hashCode ^
-      currentMediumLevel.hashCode ^
-      currentHardLevel.hashCode ^
-      currentExpertLevel.hashCode ^
-      isEasyLevelPause.hashCode ^
-      isMediumLevelPause.hashCode ^
-      isHardLevelPause.hashCode ^
-      isExpertLevelPause.hashCode ^
-      isMediumLevelActive.hashCode ^
-      isHardLevelActive.hashCode ^
-      isExpertLevelActive.hashCode;
+    return 'ProfileModel(score: $score,  availableHint: $availableHint, currentEasyLevel: $currentEasyLevel, currentMediumLevel: $currentMediumLevel, currentHardLevel: $currentHardLevel, currentExpertLevel: $currentExpertLevel, isEasyLevelPause: $isEasyLevelPause, isMediumLevelPause: $isMediumLevelPause, isHardLevelPause: $isHardLevelPause, isExpertLevelPause: $isExpertLevelPause, isMediumLevelActive: $isMediumLevelActive, isHardLevelActive: $isHardLevelActive, isExpertLevelActive: $isExpertLevelActive)';
   }
 }

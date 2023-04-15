@@ -60,9 +60,9 @@ class ProfileView extends GetView<ProfileController> {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              Text("ProfileHeading",
-                  style: Theme.of(context).textTheme.headlineMedium),
+              // const SizedBox(height: 10),
+              // Text("ProfileHeading",
+              //     style: Theme.of(context).textTheme.headlineMedium),
               Text("Score : ${controller.user.score}",
                   style: Theme.of(context).textTheme.headlineSmall),
               const SizedBox(height: 20),
@@ -97,6 +97,10 @@ class ProfileView extends GetView<ProfileController> {
               ProfileMenuWidget(
                 title: "Hard",
                 level: controller.user.currentHardLevel,
+              ),
+              ProfileMenuWidget(
+                title: "Expert",
+                level: controller.user.currentExpertLevel,
               ),
 
               const Divider(),

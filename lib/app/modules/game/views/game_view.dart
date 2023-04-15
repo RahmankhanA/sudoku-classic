@@ -64,16 +64,22 @@ class GameView extends GetView<GameController> {
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    controller.fillNextHint();
+                    // controller.fillNextHint();
+                    controller.onPressedHintButton();
                   },
                   icon: const Icon(Icons.lightbulb_outline_rounded),
                   label: GetBuilder(
-                    init: controller,
+                    init: controller.profileController,
                     id: 'hint',
                     initState: (_) {},
                     builder: (_) {
+                      String hint =
+                          controller.profileController.user.availableHint == 0
+                              ? ''
+                              : controller.profileController.user.availableHint
+                                  .toString();
                       return Text(
-                        "${controller.profileController.user.availableHint} ",
+                        hint,
                         style:
                             const TextStyle(fontSize: 18, color: Colors.blue),
                       );
@@ -258,7 +264,8 @@ class GameView extends GetView<GameController> {
           id: 'ads',
           builder: (_) {
             return controller.adsController.isHomePageBannerLoaded
-                ? SizedBox(
+                ? Container(
+                    color: LevelColor.backgroundColor,
                     // width: controller.adsController.homePageBanner.size.width.toDouble(),
                     // width: MediaQuery.of(context).size.width,
                     height: controller.adsController.homePageBanner.size.height
@@ -267,8 +274,8 @@ class GameView extends GetView<GameController> {
                         AdWidget(ad: controller.adsController.homePageBanner),
                   )
                 : Container(
-                  height: 0,
-                );
+                    height: 0,
+                  );
           }),
     );
   }

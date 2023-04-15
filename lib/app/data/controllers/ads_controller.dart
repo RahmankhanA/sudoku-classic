@@ -6,6 +6,7 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:sudoku_classic/app/modules/profile/controllers/profile_controller.dart';
 
 class AdsController extends GetxController {
+ late int numberOfGamePlayed;
   ProfileController profileController = Get.find<ProfileController>();
   bool isHomePageBannerLoaded = false;
   late BannerAd homePageBanner;
@@ -21,6 +22,7 @@ class AdsController extends GetxController {
 
   @override
   void onInit() {
+    numberOfGamePlayed=0;
     initializeFullPageAd();
     initializeHomePageBanner();
     createRewardedAd();
@@ -33,24 +35,26 @@ class AdsController extends GetxController {
         request: const AdRequest(),
         rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (RewardedAd ad) {
-            print('$ad loaded.');
+            log('$ad loaded.');
             // _rewardedAd = ad;
             // _numRewardedLoadAttempts = 0;
             rewardedAdContent = ad;
             isRewardedAdLoaded = true;
-            update(['ads']);
+            // update(['ads']);
           },
           onAdFailedToLoad: (LoadAdError error) {
             log('RewardedAd failed to load: $error');
             isRewardedAdLoaded = false;
-            update(['ads']);
+            // update(['ads']);
+            createRewardedAd();
           },
         ));
   }
 
   void showRewardedAd() {
     if (isRewardedAdLoaded == false) {
-      print('Warning: attempt to show rewarded before loaded.');
+      log('Warning: attempt to show rewarded before loaded.');
+      createRewardedAd();
     }
 
     rewardedAdContent!.fullScreenContentCallback = FullScreenContentCallback(
@@ -77,9 +81,11 @@ class AdsController extends GetxController {
       log('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
        profileController.user = profileController.user.copyWith(
         availableHint: profileController.user.availableHint + 10,
-        score: profileController.user.score + 50,
+        score: profileController.user.score + 30,
       );
       update(['ads']);
+      profileController.update(['hint']);
+      createRewardedAd();
     });
     rewardedAdContent = null;
   }
@@ -95,13 +101,16 @@ void initializeHomePageBanner()  async{
       listener: BannerAdListener(onAdLoaded: (ad) {
         log('PlayPage Banner Loaded!');
         isHomePageBannerLoaded = true;
+        update(['ads']);
       }, onAdClosed: (ad) {
         ad.dispose();
         isHomePageBannerLoaded = false;
         initializeHomePageBanner();
+
       }, onAdFailedToLoad: (ad, err) {
         log(err.toString());
         isHomePageBannerLoaded = false;
+        initializeHomePageBanner();
       }),
     );
 

@@ -4,12 +4,15 @@ import 'dart:developer';
 // import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/data/controllers/ads_controller.dart';
+import 'package:sudoku_classic/app/data/local_db/game_state_db.dart';
 import 'package:sudoku_classic/app/modules/game/model/sudoku_model.dart';
+import 'package:sudoku_classic/app/modules/game/model/sudoku_state_model.dart';
 import 'package:sudoku_classic/app/modules/game/service/sudoku_service.dart';
 import 'package:sudoku_classic/app/modules/game/widgets/alert.dart';
 import 'package:sudoku_classic/app/modules/profile/controllers/profile_controller.dart';
 
 class GameController extends GetxController {
+  GameStateDataBase gameStateDataBase = GameStateDataBase();
   ProfileController profileController = Get.find<ProfileController>();
   AdsController adsController = Get.find<AdsController>();
 
@@ -33,6 +36,7 @@ class GameController extends GetxController {
 
   // to store the puzzle board
   late List<List<SudokuModel>> puzzle;
+  late List<List<SudokuModel>> _solution;
 
 // creating sudoku ggenerator
   late SudokuGenerator sudokuGenerator;
@@ -41,6 +45,8 @@ class GameController extends GetxController {
   List<Map<String, int>> hint = [];
 
   generateSudoku() async {
+    adsController.numberOfGamePlayed++;
+
     // clearing the hint list
     hint.clear();
 
@@ -62,6 +68,7 @@ class GameController extends GetxController {
     sudokuGenerator = SudokuGenerator(emptySquares: emptySpace);
 
     puzzle = sudokuGenerator.newSudoku;
+    _solution = sudokuGenerator.newSudokuSolved;
 
     if (time != '00.00') {
       _timer!.cancel();
@@ -75,14 +82,30 @@ class GameController extends GetxController {
 
     // updating ui
     update();
+    if (adsController.numberOfGamePlayed % 5 == 0 &&
+        adsController.isInterstitialAdLoaded) {
+      adsController.interstitialAd.show().then((value) {
+        adsController.initializeFullPageAd();
+      });
+    }
+    log("number of game played ${adsController.numberOfGamePlayed}");
   }
 
   @override
   void onInit() {
     // creating initial sudoku
+    // adsController.initializeHomePageBanner();
+    adsController.createRewardedAd();
+    adsController.initializeFullPageAd();
     gameType = Get.arguments['Type'];
     currentLevel = Get.arguments['gameLevel'];
-    generateSudoku();
+    // gameStateDataBase.getGameState(gameType: gameType);
+    // if (isSelectedGameTypePaused()) {
+    //   getPausedLevel();
+    //   // gameStateDataBase.getGameState(gameType: gameType);
+    // } else {
+      generateSudoku();
+    // }
 
     super.onInit();
   }
@@ -95,6 +118,23 @@ class GameController extends GetxController {
 
   @override
   void onClose() {
+    if (adsController.numberOfGamePlayed % 3 == 0 &&
+        adsController.isInterstitialAdLoaded) {
+      adsController.interstitialAd.show();
+    }
+    log('interstitial add loded ${adsController.isInterstitialAdLoaded}');
+    updateUserProfileForLevelPaused();
+    gameStateDataBase.setGameState(
+      SudokuStateModel(
+          gameType: getGameDeficultiLevel(),
+          level: currentLevel,
+          puzzle: puzzle,
+          solution: _solution,
+          hintList: hint,
+          remainingLife: lifeRemain.value,
+          time: time,
+          numberCount: remainingNumberCount),
+    );
     _timer!.cancel();
     super.onClose();
   }
@@ -137,8 +177,7 @@ class GameController extends GetxController {
       remainingNumberCount[data2 - 1]--;
 
       // checking that sudoku is solved or not
-      bool res = isPuzzleSolved(
-          puzzleBoard: puzzle, solution: sudokuGenerator.newSudokuSolved);
+      bool res = isPuzzleSolved(puzzleBoard: puzzle, solution: _solution);
       if (res) {
         increaseLevel();
         update(['level']);
@@ -147,12 +186,13 @@ class GameController extends GetxController {
       }
       // updating the UI
       profileController.user = profileController.user.copyWith(
-        availableHint: 10,
-        // availableHint: profileController.user.availableHint - 1,
+        // availableHint: 10,
+        availableHint: profileController.user.availableHint - 1,
       );
-      update(['hint']);
-      update();
+      profileController.updateUserProfile(profileController.user);
     }
+    profileController.update(['hint']);
+    update();
   }
 
   void onPressedDeleteIcon() {
@@ -204,12 +244,9 @@ class GameController extends GetxController {
       // decreasing the remaining number count
       remainingNumberCount[value - 1]--;
 
-
-
       // checking that is puzzle soved or not
 
-      bool res = isPuzzleSolved(
-          puzzleBoard: puzzle, solution: sudokuGenerator.newSudokuSolved);
+      bool res = isPuzzleSolved(puzzleBoard: puzzle, solution: _solution);
       if (res) {
         increaseLevel();
         // showing the solved puzzle alert
@@ -242,7 +279,7 @@ class GameController extends GetxController {
         // checking that current cell is empty or not
         if (puzzle[i][j].value == 0) {
           // if current cell is empty then add that add that cell value from solved sudoku to hint
-          hint.add({'$i $j': sudokuGenerator.newSudokuSolved[i][j].value});
+          hint.add({'$i $j': _solution[i][j].value});
         }
       }
     }
@@ -307,35 +344,37 @@ class GameController extends GetxController {
     switch (gameType) {
       case 'Easy':
         profileController.user = profileController.user.copyWith(
-            currentEasyLevel: profileController.user.currentEasyLevel + 1,
-            score: profileController.user.score + 10,
-            // isMediumLevelActive:
-            //     profileController.user.score > 100 ? true : false,
-            currentMediumLevel: profileController.user.score == 50
-                ? 1
-                : profileController.user.currentMediumLevel,
-            // isHardLevelActive: profileController.user.score > 200 ? true : false,
-            currentHardLevel: profileController.user.score == 100
-                ? 1
-                : profileController.user.currentHardLevel,
-            currentExpertLevel: profileController.user.score == 150
-                ? 1
-                : profileController.user.currentExpertLevel);
+          currentEasyLevel: profileController.user.currentEasyLevel + 1,
+          score: profileController.user.score + 10,
+          // isMediumLevelActive:
+          //     profileController.user.score > 100 ? true : false,
+          // currentMediumLevel: profileController.user.score == 50
+          //     ? 1
+          //     : profileController.user.currentMediumLevel,
+          // // isHardLevelActive: profileController.user.score > 200 ? true : false,
+          // currentHardLevel: profileController.user.score == 100
+          //     ? 1
+          //     : profileController.user.currentHardLevel,
+          // currentExpertLevel: profileController.user.score == 150
+          //     ? 1
+          //     : profileController.user.currentExpertLevel,
+        );
 
         profileController.updateUserProfile(profileController.user);
         currentLevel = currentLevel + 1;
         break;
       case 'Medium':
         profileController.user = profileController.user.copyWith(
-            currentMediumLevel: profileController.user.currentMediumLevel + 1,
-            score: profileController.user.score + 10,
-            // isHardLevelActive: profileController.user.score > 200 ? true : false,
-            currentHardLevel: profileController.user.score == 10
-                ? 1
-                : profileController.user.currentHardLevel,
-            currentExpertLevel: profileController.user.score == 150
-                ? 1
-                : profileController.user.currentExpertLevel);
+          currentMediumLevel: profileController.user.currentMediumLevel + 1,
+          score: profileController.user.score + 10,
+          // isHardLevelActive: profileController.user.score > 200 ? true : false,
+          // currentHardLevel: profileController.user.score == 10
+          //     ? 1
+          //     : profileController.user.currentHardLevel,
+          // currentExpertLevel: profileController.user.score == 150
+          //     ? 1
+          //     : profileController.user.currentExpertLevel,
+        );
 
         profileController.updateUserProfile(profileController.user);
         currentLevel = currentLevel + 1;
@@ -344,9 +383,9 @@ class GameController extends GetxController {
         profileController.user = profileController.user.copyWith(
           currentHardLevel: profileController.user.currentHardLevel + 1,
           score: profileController.user.score + 10,
-          currentExpertLevel: profileController.user.score == 150
-              ? 1
-              : profileController.user.currentExpertLevel,
+          // currentExpertLevel: profileController.user.score == 150
+          //     ? 1
+          //     : profileController.user.currentExpertLevel,
         );
 
         profileController.updateUserProfile(profileController.user);
@@ -374,12 +413,90 @@ class GameController extends GetxController {
   }
 
   void playTimer() {
-    // _timer!.isActive;
-    var dat = time.split(':');
-    int sec = int.parse(dat[0]) * 60 + int.parse(dat[1]);
-    // Isolate.spawn(_startTimer, sec);
     isTimerPaused = false;
     log('timer started');
     update(['timer']);
+  }
+
+  void onPressedHintButton() {
+    // fillNextHint();
+    if(profileController.user.availableHint>0){
+      fillNextHint();
+    }else{
+      CustomAlert.showConfirmationDialogForWatchAd(controller: adsController);
+    }
+  }
+
+  getGameDeficultiLevel() {
+    switch (gameType) {
+      case 'Easy':
+        return GameDeficultyLevel.Easy;
+      case 'Medium':
+        return GameDeficultyLevel.Medium;
+      case 'Hard':
+        return GameDeficultyLevel.Hard;
+      case 'Expert':
+        return GameDeficultyLevel.Expert;
+
+      default:
+    }
+  }
+
+  void updateUserProfileForLevelPaused() {
+    switch (gameType) {
+      case 'Easy':
+        profileController.user =
+            profileController.user.copyWith(isEasyLevelPause: true);
+        break;
+      case 'Medium':
+        profileController.user =
+            profileController.user.copyWith(isMediumLevelPause: true);
+        break;
+      case 'Hard':
+        profileController.user =
+            profileController.user.copyWith(isHardLevelPause: true);
+        break;
+      case 'Expert':
+        profileController.user =
+            profileController.user.copyWith(isExpertLevelPause: true);
+        break;
+
+      default:
+    }
+    profileController.updateUserProfile(profileController.user);
+  }
+
+  bool isSelectedGameTypePaused() {
+    switch (gameType) {
+      case 'Easy':
+        return profileController.user.isEasyLevelPause;
+      case 'Medium':
+        return profileController.user.isMediumLevelPause;
+      case 'Hard':
+        return profileController.user.isHardLevelPause;
+      case 'Expert':
+        return profileController.user.isExpertLevelPause;
+
+      default:
+        return false;
+    }
+  }
+
+  void getPausedLevel() async {
+    var data = await gameStateDataBase.getGameState(gameType: gameType);
+    if (data == null) {
+      generateSudoku();
+    } else {
+      puzzle = data.puzzle;
+      _solution = data.solution;
+      hint = data.hintList;
+      remainingNumberCount = remainingNumberCount;
+      time = data.time;
+      // gameType=data.gameType.name;
+      currentLevel = data.level;
+      _startTimer(
+          int.parse(time.split(':')[0]) * 60 + int.parse(time.split(':')[1]));
+          update();
+    }
   }
 }

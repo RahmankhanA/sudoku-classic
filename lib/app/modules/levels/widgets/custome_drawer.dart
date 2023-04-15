@@ -8,7 +8,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final theme = Theme.of(context);
-    Size size = MediaQuery.of(context).size;
+    // Size size = MediaQuery.of(context).size;
     return Drawer(
       // Add a ListView to the drawer. This ensures the user can scroll
       // through the options in the drawer if there isn't enough vertical
@@ -48,8 +48,8 @@ class CustomDrawer extends StatelessWidget {
                   ),
                 ),
                 // ListTile(
-                //   leading: const Icon(Icons.settings),
-                //   title: const Text('Settings'),
+                //   leading: const Icon(Icons.today_outlined),
+                //   title: const Text('Todo'),
                 //   trailing: const Icon(Icons.arrow_forward_ios),
                 //   onTap: () {
                 //     // Update the state of the app.
