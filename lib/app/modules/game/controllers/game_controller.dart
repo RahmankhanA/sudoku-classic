@@ -94,7 +94,7 @@ class GameController extends GetxController {
   @override
   void onInit() {
     // creating initial sudoku
-    // adsController.initializeHomePageBanner();
+    adsController.initializeHomePageBanner();
     adsController.createRewardedAd();
     adsController.initializeFullPageAd();
     gameType = Get.arguments['Type'];

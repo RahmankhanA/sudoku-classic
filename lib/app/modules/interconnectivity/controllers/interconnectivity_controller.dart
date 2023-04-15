@@ -97,7 +97,7 @@ class InterconnectivityController extends GetxController {
 
 
             Get.back();
-            if(number%5!=0){
+            if(number%3!=0){
 
 
             ConnectivityResult result =
