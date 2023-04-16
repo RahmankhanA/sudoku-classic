@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
@@ -65,6 +67,9 @@ class _DailyChallengeCalendarState extends State<DailyChallengeCalendar> {
             },
 
             calendarStyle: const CalendarStyle(
+              // weekNumberTextStyle: TextStyle(fontSize: 12, color: Colors.white),
+              weekendTextStyle:
+                  TextStyle(fontSize: 12, color: Color(0xFFBFBFBF)),
               todayDecoration: BoxDecoration(
                 color: Colors.blue,
                 shape: BoxShape.circle,
@@ -73,7 +78,7 @@ class _DailyChallengeCalendarState extends State<DailyChallengeCalendar> {
                 color: Colors.green,
                 shape: BoxShape.circle,
               ),
-              markersMaxCount: 1,
+              // markersMaxCount: 1,
               // markersPositionBottom: -15,
 
               markersAlignment: Alignment.bottomCenter,
@@ -106,12 +111,17 @@ class _DailyChallengeCalendarState extends State<DailyChallengeCalendar> {
               //   );
               // },
               holidayBuilder: (context, day, focusedDay) {
+                log(day.isBefore(focusedDay).toString());
+                log(day.toString().split(' ')[0].replaceAll('-', '/'));
                 return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(focusedDay.day.toString(),
-                        style: const TextStyle(fontSize: 18)),
+                    Text(day.day.toString(),
+                        style: const TextStyle(fontSize: 15)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: const [
                         Icon(
                           Icons.star,
