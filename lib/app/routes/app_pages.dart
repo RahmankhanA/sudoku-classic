@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/dailyActivity/bindings/daily_activity_binding.dart';
+import '../modules/dailyActivity/views/daily_activity_view.dart';
 import '../modules/game/bindings/game_binding.dart';
 import '../modules/game/views/game_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -55,8 +57,13 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.INTERCONNECTIVITY,
-      page: () =>  ConfirmationDialogForInternet(message: '',onConfirm: (){}),
+      page: () => ConfirmationDialogForInternet(message: '', onConfirm: () {}),
       binding: InterconnectivityBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAILY_ACTIVITY,
+      page: () => const DailyActivityView(),
+      binding: DailyActivityBinding(),
     ),
   ];
 }

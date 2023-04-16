@@ -22,7 +22,7 @@ class SplashScreenView extends GetView<SplashScreenController> {
       //   ),
       // ),
       backgroundColor: LevelColor.backgroundColor,
-      showLoader: false,
+      showLoader: true,
       loadingText: const Text("Loading...",
         style: TextStyle(
           fontSize: 18,

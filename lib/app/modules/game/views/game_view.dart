@@ -218,14 +218,14 @@ class GameView extends GetView<GameController> {
                           builder: (_) {
                             return ElevatedButton.icon(
                               // !---------Normal number button----------!
-                              onPressed: () {
+                              onPressed: controller.remainingNumberCount[index]!=0?() {
                                 // controller.selectedNumber = index + 1;
                                 // controller.sudokuGenerator.newSudoku[
                                 //                   controller.rowSelected]
                                 //               [controller.colSelected] ==
                                 //           0 &&
                                 controller.onPressedNumber(value: index + 1);
-                              },
+                              }:null,
                               icon: Text(
                                 '${index + 1}',
                                 style: const TextStyle(fontSize: 25),

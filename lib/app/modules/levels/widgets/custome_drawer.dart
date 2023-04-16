@@ -47,18 +47,30 @@ class CustomDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                // ListTile(
-                //   leading: const Icon(Icons.today_outlined),
-                //   title: const Text('Todo'),
-                //   trailing: const Icon(Icons.arrow_forward_ios),
-                //   onTap: () {
-                //     // Update the state of the app.
-                //     // ...
-                //     // log(theme.appBarTheme.toString());
-                //     Get.back();
-                //     Get.toNamed('/setting');
-                //   },
-                // ),
+                ListTile(
+                  leading: const Icon(Icons.today_outlined),
+                  title: const Text('Todo'),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                    // log(theme.appBarTheme.toString());
+                    Get.back();
+                    Get.toNamed('/setting');
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.calendar_today),
+                  title: const Text('Daily Activity'),
+                  trailing: const Icon(Icons.arrow_forward_ios),
+                  onTap: () {
+                    // Update the state of the app.
+                    // ...
+                    // log(theme.appBarTheme.toString());
+                    // Get.back();
+                    Get.toNamed('/daily-activity');
+                  },
+                ),
                 ListTile(
                   leading: const Icon(Icons.person_3),
                   title: const Text('profile'),
@@ -70,6 +82,7 @@ class CustomDrawer extends StatelessWidget {
                     // ...
                   },
                 ),
+
               ],
             ),
           ),
