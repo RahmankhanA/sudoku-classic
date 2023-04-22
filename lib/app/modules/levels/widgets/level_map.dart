@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:sudoku_classic/app/data/colors/level_color.dart';
 
@@ -34,7 +36,13 @@ class _GameLevelMapState extends State<GameLevelMap> {
   @override
   void initState() {
     super.initState();
-    itemCount=(widget.currentLevel/50+ itemCount) as int;
+
+    if (widget.currentLevel > 50) {
+
+      log((widget.currentLevel ~/ 50).toString());
+      itemCount = itemCount + widget.currentLevel ~/ 50 * 25;
+    }
+  
 
     mapLinePainter1 =
         MapLinePainter1(LevelColor.levelMapBackgroundColor, stroke);
@@ -42,12 +50,10 @@ class _GameLevelMapState extends State<GameLevelMap> {
         MapLinePainter2(LevelColor.levelMapBackgroundColor, stroke);
     _controller = ScrollController();
     _goToCurrentLevel();
-
   }
 
   @override
   void dispose() {
-
     _controller.dispose();
     super.dispose();
   }

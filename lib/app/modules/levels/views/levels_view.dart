@@ -47,6 +47,7 @@ class LevelsView extends GetView<LevelsController> {
                       gameType: 'Easy',
                       currentLevel:
                           controller.profileController.user.currentEasyLevel,
+                          // controller.profileController.user.currentEasyLevel,
                     ),
                     controller.profileController.user.currentEasyLevel > 5
                         ? Padding(
