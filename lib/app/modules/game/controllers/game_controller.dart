@@ -104,7 +104,7 @@ class GameController extends GetxController {
     //   getPausedLevel();
     //   // gameStateDataBase.getGameState(gameType: gameType);
     // } else {
-      generateSudoku();
+    generateSudoku();
     // }
 
     super.onInit();
@@ -217,6 +217,8 @@ class GameController extends GetxController {
 
   void onPressedNumber({required int value}) {
     bool isNumberAvailable = remainingNumberCount[value - 1] != 0;
+    log('rowSelected $rowSelected');
+    log('colSelected $colSelected');
     // checking that any cell is selected or not AND is selected cell editable or not AND Pressed Number is available or not
     if (rowSelected > -1 &&
         puzzle[rowSelected][colSelected].isEditable &&
@@ -228,6 +230,13 @@ class GameController extends GetxController {
       if (currentValue != 0) {
         //increasing the remaining number count
         remainingNumberCount[puzzle[rowSelected][colSelected].value - 1]++;
+
+        if (sudokuGenerator.checkIfSafe(
+            rowSelected, colSelected, puzzle[rowSelected][colSelected].value)) {
+          hint.add({
+            '$rowSelected $colSelected': puzzle[rowSelected][colSelected].value
+          });
+        }
       }
 
       // checking that move is valid or not
@@ -238,22 +247,20 @@ class GameController extends GetxController {
         value: value,
       );
 
-      // for removing hint from the hint list
-      removeHint(row: rowSelected, column: colSelected);
-
       // decreasing the remaining number count
       remainingNumberCount[value - 1]--;
 
       // checking that is puzzle soved or not
 
       bool res = isPuzzleSolved(puzzleBoard: puzzle, solution: _solution);
+      log('is valid move $res');
       if (res) {
         increaseLevel();
         // showing the solved puzzle alert
         update(['level']);
         CustomAlert.gameWon(controller: this);
       }
-
+      // for removing hint from the hint list
       log(puzzle[rowSelected][colSelected].toString());
 
       // updating UI
@@ -303,6 +310,7 @@ class GameController extends GetxController {
     if (sudokuGenerator.checkIfSafe(row, column, value)) {
       // making isValid true for the selected cell
       puzzle[row][column].isValid = true;
+      removeHint(row: rowSelected, column: colSelected);
     } else {
       // making isValid false for the selected cell
       puzzle[row][column].isValid = false;
@@ -310,7 +318,8 @@ class GameController extends GetxController {
       // checking that life is available or not
       if (life.value == 1) {
         // showing the game over alert
-        CustomAlert.gameOver(controller: this);
+        // CustomAlert.gameOver(controller: this);
+        CustomAlert.showConfirmationDialogForWatchAdToEarnLife(controller: this);
       } else {
         // decreasing the life
         life.value--;
@@ -420,10 +429,10 @@ class GameController extends GetxController {
 
   void onPressedHintButton() {
     // fillNextHint();
-    if(profileController.user.availableHint>0){
+    if (profileController.user.availableHint > 0) {
       fillNextHint();
-    }else{
-      CustomAlert.showConfirmationDialogForWatchAd(controller: adsController);
+    } else {
+      CustomAlert.showConfirmationDialogForWatchAdToEarnHint(controller: this);
     }
   }
 
@@ -496,7 +505,7 @@ class GameController extends GetxController {
       currentLevel = data.level;
       _startTimer(
           int.parse(time.split(':')[0]) * 60 + int.parse(time.split(':')[1]));
-          update();
+      update();
     }
   }
 }

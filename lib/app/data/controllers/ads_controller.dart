@@ -1,13 +1,15 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
-import 'package:sudoku_classic/app/modules/profile/controllers/profile_controller.dart';
+import 'package:sudoku_classic/app/modules/game/controllers/game_controller.dart';
 
 class AdsController extends GetxController {
- late int numberOfGamePlayed;
-  ProfileController profileController = Get.find<ProfileController>();
+  late int numberOfGamePlayed;
+  // ProfileController profileController = Get.find<ProfileController>();
+  // late GameController gameController ;
   bool isHomePageBannerLoaded = false;
   late BannerAd homePageBanner;
 
@@ -19,10 +21,9 @@ class AdsController extends GetxController {
   bool isRewardedAdLoaded = false;
   RewardedAd? rewardedAdContent;
 
-
   @override
   void onInit() {
-    numberOfGamePlayed=0;
+    numberOfGamePlayed = 0;
     initializeFullPageAd();
     initializeHomePageBanner();
     createRewardedAd();
@@ -51,7 +52,8 @@ class AdsController extends GetxController {
         ));
   }
 
-  void showRewardedAd() {
+  void showRewardedAd(
+      {required bool isForHint, required GameController controller}) {
     if (isRewardedAdLoaded == false) {
       log('Warning: attempt to show rewarded before loaded.');
       createRewardedAd();
@@ -79,21 +81,34 @@ class AdsController extends GetxController {
     rewardedAdContent!.show(
         onUserEarnedReward: (AdWithoutView ad, RewardItem reward) {
       log('$ad with reward $RewardItem(${reward.amount}, ${reward.type})');
-       profileController.user = profileController.user.copyWith(
-        availableHint: profileController.user.availableHint + 10,
-        score: profileController.user.score + 30,
-      );
+      // profileController.user = profileController.user.copyWith(
+      //   availableHint: profileController.user.availableHint + 10,
+      //   score: profileController.user.score + 30,
+      // );
+      // isForHint
+      //     ?
+      //     : profileController.user.copyWith(
+
+      //         score: profileController.user.score + 30,
+      //       );
+
+      if (isForHint) {
+        controller.profileController.user =
+            controller.profileController.user.copyWith(
+          availableHint: controller.profileController.user.availableHint + 10,
+        );
+        controller.profileController.update(['hint']);
+      } else {
+        controller.lifeRemain.value += 2;
+      }
       update(['ads']);
-      profileController.update(['hint']);
+
       createRewardedAd();
     });
     rewardedAdContent = null;
   }
 
-
-
-
-void initializeHomePageBanner()  async{
+  void initializeHomePageBanner() async {
     homePageBanner = BannerAd(
       adUnitId: AdHelper.playBanner(),
       size: AdSize.banner,
@@ -106,7 +121,6 @@ void initializeHomePageBanner()  async{
         ad.dispose();
         isHomePageBannerLoaded = false;
         initializeHomePageBanner();
-
       }, onAdFailedToLoad: (ad, err) {
         log(err.toString());
         isHomePageBannerLoaded = false;
@@ -114,14 +128,14 @@ void initializeHomePageBanner()  async{
       }),
     );
 
-   await  homePageBanner.load();
-   update(['ads']);
+    await homePageBanner.load();
+    update(['ads']);
 
     // notifyListeners();
   }
 
-  void initializeFullPageAd()  {
-     InterstitialAd.load(
+  void initializeFullPageAd() {
+    InterstitialAd.load(
       adUnitId: AdHelper.interstialAd(),
       request: const AdRequest(),
       adLoadCallback: InterstitialAdLoadCallback(onAdLoaded: (ad) {
@@ -161,7 +175,7 @@ class AdHelper {
 
   static String rewardedAd() {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3404733564908964/3366682096';
+      return kDebugMode?'	ca-app-pub-3940256099942544/5224354917': 'ca-app-pub-3404733564908964/3366682096';
     } else {
       return '';
     }

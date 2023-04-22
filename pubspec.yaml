@@ -1,4 +1,5 @@
 name: sudoku_classic
+
 version: 1.0.1+2
 publish_to: none
 description: A new Flutter project.
@@ -18,6 +19,9 @@ dependencies:
   google_mobile_ads: ^2.4.0
   connectivity_plus: ^3.0.4
   table_calendar: ^3.0.9
+  in_app_update: ^4.0.1
+  advanced_in_app_review: ^1.1.3
+  app_settings: ^4.2.0
   # flutter_calendar_carousel: ^2.4.2
 
 

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -90,7 +91,9 @@ class InterconnectivityController extends GetxController {
         return ConfirmationDialogForInternet(
           message: 'Enable Internet \nTo run the app smoothly',
           onConfirm: () async {
+            await AppSettings.openDataRoamingSettings( asAnotherTask: true);
             Get.back();
+            log('returned from setting');
             if (number % 3 != 0) {
               ConnectivityResult result =
                   await _networkConnectivity.checkConnectivity();

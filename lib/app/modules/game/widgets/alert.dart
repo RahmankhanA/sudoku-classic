@@ -66,7 +66,7 @@ class ConfirmationDialog extends StatelessWidget {
 }
 
 class CustomAlert {
-  static showConfirmationDialogForWatchAd({required AdsController controller}) {
+  static showConfirmationDialogForWatchAdToEarnHint({required GameController controller}) {
     return showDialog(
       context: Get.context!,
       builder: (BuildContext context) {
@@ -75,14 +75,39 @@ class CustomAlert {
           onConfirm: () {
             // do something when user confirms the action
             Get.back();
-            if (controller.isRewardedAdLoaded) {
-              controller.showRewardedAd();
+            if (controller.adsController.isRewardedAdLoaded) {
+              controller.adsController.showRewardedAd(isForHint: true, controller: controller);
             } else {
               // Get.bottomSheet(Get.showSnackbar(snackbar))
-              controller.createRewardedAd();
-              Get.snackbar('Ads Not Available', 'Try  Again Later',
+              controller.adsController.createRewardedAd();
+              Get.snackbar('Ads are Not Available', 'Try  Again Later',
                   backgroundColor: LevelColor.levelMapBackgroundColor,
                   snackPosition: SnackPosition.BOTTOM);
+            }
+          },
+        );
+      },
+    );
+  }
+  static showConfirmationDialogForWatchAdToEarnLife({required GameController controller}) {
+    return showDialog(
+      context: Get.context!,
+      builder: (BuildContext context) {
+        return ConfirmationDialog(
+          message: 'You don`t have life \nWatch Ads to increase your chance',
+          onConfirm: () {
+            // do something when user confirms the action
+            Get.back();
+            if (controller.adsController.isRewardedAdLoaded) {
+              controller.adsController.showRewardedAd(isForHint: false, controller: controller);
+            } else {
+              // Get.bottomSheet(Get.showSnackbar(snackbar))
+              controller.adsController.createRewardedAd();
+              Get.snackbar('Ads are Not Available', 'Try  Again Later',
+                  backgroundColor: LevelColor.levelMapBackgroundColor,
+                  snackPosition: SnackPosition.BOTTOM);
+
+                  gameOver(controller: controller);
             }
           },
         );

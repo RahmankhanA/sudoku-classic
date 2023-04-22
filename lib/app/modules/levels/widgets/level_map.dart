@@ -42,7 +42,7 @@ class _GameLevelMapState extends State<GameLevelMap> {
       log((widget.currentLevel ~/ 50).toString());
       itemCount = itemCount + widget.currentLevel ~/ 50 * 25;
     }
-  
+
 
     mapLinePainter1 =
         MapLinePainter1(LevelColor.levelMapBackgroundColor, stroke);
@@ -119,8 +119,8 @@ class _GameLevelMapState extends State<GameLevelMap> {
   }
 
   void _goToCurrentLevel() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    _controller.jumpTo(spaceCurve * itemCount);
+    // await Future.delayed(const Duration(milliseconds: 200));
+    // _controller.jumpTo(spaceCurve * itemCount);
     await Future.delayed(const Duration(seconds: 1));
     _controller.animateTo(
         spaceCurve * (itemCount - widget.currentLevel / 2 - 3),

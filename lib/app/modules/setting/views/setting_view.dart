@@ -21,10 +21,7 @@ class SettingView extends GetView<SettingController> {
               '1. Add Promo Video',
               style: TextStyle(fontSize: 20),
             ),
-            Text(
-              '2. Add More Life',
-              style: TextStyle(fontSize: 20),
-            ),
+           
             Text(
               '3. signer',
               style: TextStyle(fontSize: 20),
