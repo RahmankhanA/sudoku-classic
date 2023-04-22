@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sudoku_classic/app/modules/widget/licence.dart';
@@ -47,18 +48,22 @@ class CustomDrawer extends StatelessWidget {
                     ],
                   ),
                 ),
-                ListTile(
-                  leading: const Icon(Icons.today_outlined),
-                  title: const Text('Todo'),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    // log(theme.appBarTheme.toString());
-                    Get.back();
-                    Get.toNamed('/setting');
-                  },
-                ),
+                kDebugMode
+                    ? ListTile(
+                        leading: const Icon(Icons.today_outlined),
+                        title: const Text('Todo'),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Update the state of the app.
+                          // ...
+                          // log(theme.appBarTheme.toString());
+                          Get.back();
+                          Get.toNamed('/setting');
+                        },
+                      )
+                    : const SizedBox(
+                        height: 0,
+                      ),
                 ListTile(
                   leading: const Icon(Icons.calendar_today),
                   title: const Text('Daily Activity'),
@@ -82,7 +87,6 @@ class CustomDrawer extends StatelessWidget {
                     // ...
                   },
                 ),
-
               ],
             ),
           ),

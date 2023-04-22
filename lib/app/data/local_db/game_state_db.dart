@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sudoku_classic/app/modules/game/model/sudoku_state_model.dart';
 

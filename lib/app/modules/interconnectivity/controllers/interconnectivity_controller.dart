@@ -5,12 +5,9 @@ import 'dart:io';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sudoku_classic/app/data/colors/level_color.dart';
 import 'package:sudoku_classic/app/modules/interconnectivity/views/interconnectivity_view.dart';
 
 class InterconnectivityController extends GetxController {
-  //TODO: Implement InterconnectivityController
-
   final _networkConnectivity = Connectivity();
   final _controller = StreamController.broadcast();
   Stream get myStream => _controller.stream;
@@ -33,7 +30,7 @@ class InterconnectivityController extends GetxController {
   void connectivityListen() {
     myStream.listen((source) {
       String string = '';
-      print('source $source');
+      log('source $source');
       // 1.
       log(source.toString());
       switch (source.keys.toList()[0]) {
@@ -52,7 +49,6 @@ class InterconnectivityController extends GetxController {
       //  Get.snackbar('Connection Status', string,
       //       backgroundColor: LevelColor.levelMapBackgroundColor,
       //       snackPosition: SnackPosition.BOTTOM);
-
     });
   }
 
@@ -94,15 +90,11 @@ class InterconnectivityController extends GetxController {
         return ConfirmationDialogForInternet(
           message: 'Enable Internet \nTo run the app smoothly',
           onConfirm: () async {
-
-
             Get.back();
-            if(number%3!=0){
-
-
-            ConnectivityResult result =
-                await _networkConnectivity.checkConnectivity();
-            _checkStatus(result);
+            if (number % 3 != 0) {
+              ConnectivityResult result =
+                  await _networkConnectivity.checkConnectivity();
+              _checkStatus(result);
             }
             number++;
           },

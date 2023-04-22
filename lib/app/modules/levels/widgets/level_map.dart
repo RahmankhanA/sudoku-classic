@@ -34,18 +34,22 @@ class _GameLevelMapState extends State<GameLevelMap> {
   @override
   void initState() {
     super.initState();
+    itemCount=(widget.currentLevel/50+ itemCount) as int;
 
-    // levelWidgets = widget.levelWidgets;
-
-    // levelWidgets = levelWidgets.reversed.toList();
     mapLinePainter1 =
         MapLinePainter1(LevelColor.levelMapBackgroundColor, stroke);
     mapLinePainter2 =
         MapLinePainter2(LevelColor.levelMapBackgroundColor, stroke);
     _controller = ScrollController();
     _goToCurrentLevel();
-    // _controller.animateTo(78.0,
-    //     duration: const Duration(seconds: 1), curve: Curves.bounceInOut);
+
+  }
+
+  @override
+  void dispose() {
+
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -109,11 +113,12 @@ class _GameLevelMapState extends State<GameLevelMap> {
   }
 
   void _goToCurrentLevel() async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    _controller.jumpTo(spaceCurve * itemCount);
     await Future.delayed(const Duration(seconds: 1));
-
     _controller.animateTo(
         spaceCurve * (itemCount - widget.currentLevel / 2 - 3),
-        duration: const Duration(seconds: 1),
+        duration: const Duration(seconds: 2),
         curve: Curves.easeInOutQuart);
   }
 }

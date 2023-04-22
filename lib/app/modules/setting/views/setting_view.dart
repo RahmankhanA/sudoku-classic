@@ -18,11 +18,11 @@ class SettingView extends GetView<SettingController> {
 
           children: const [
             Text(
-              '1. internet connectivity',
+              '1. Add Promo Video',
               style: TextStyle(fontSize: 20),
             ),
             Text(
-              '2. Test App',
+              '2. Add More Life',
               style: TextStyle(fontSize: 20),
             ),
             Text(
