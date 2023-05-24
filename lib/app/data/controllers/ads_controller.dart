@@ -47,7 +47,7 @@ class AdsController extends GetxController {
             log('RewardedAd failed to load: $error');
             isRewardedAdLoaded = false;
             // update(['ads']);
-            createRewardedAd();
+            // createRewardedAd();
           },
         ));
   }
@@ -124,7 +124,7 @@ class AdsController extends GetxController {
       }, onAdFailedToLoad: (ad, err) {
         log(err.toString());
         isHomePageBannerLoaded = false;
-        initializeHomePageBanner();
+        // initializeHomePageBanner();
       }),
     );
 
@@ -159,7 +159,9 @@ class AdHelper {
   static String playBanner() {
     if (Platform.isAndroid) {
       // return 'ca-app-pub-3940256099942544/6300978111';
-      return 'ca-app-pub-3404733564908964/5038894407';
+      return kDebugMode
+          ? '	ca-app-pub-3940256099942544/6300978111'
+          : 'ca-app-pub-3404733564908964/5038894407';
     } else {
       return '';
     }
@@ -167,7 +169,9 @@ class AdHelper {
 
   static String interstialAd() {
     if (Platform.isAndroid) {
-      return 'ca-app-pub-3404733564908964/8786567727';
+      return kDebugMode
+          ? 'ca-app-pub-3940256099942544/1033173712'
+          : 'ca-app-pub-3404733564908964/8786567727';
     } else {
       return '';
     }
@@ -175,7 +179,9 @@ class AdHelper {
 
   static String rewardedAd() {
     if (Platform.isAndroid) {
-      return kDebugMode?'	ca-app-pub-3940256099942544/5224354917': 'ca-app-pub-3404733564908964/3366682096';
+      return kDebugMode
+          ? '	ca-app-pub-3940256099942544/5224354917'
+          : 'ca-app-pub-3404733564908964/3366682096';
     } else {
       return '';
     }

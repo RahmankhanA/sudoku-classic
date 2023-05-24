@@ -29,8 +29,8 @@ class InterconnectivityController extends GetxController {
   }
 
   void connectivityListen() {
+      String string ;
     myStream.listen((source) {
-      String string = '';
       log('source $source');
       // 1.
       log(source.toString());
@@ -46,6 +46,7 @@ class InterconnectivityController extends GetxController {
         default:
           string = 'Offline';
       }
+      log(string);
       // 2.
       //  Get.snackbar('Connection Status', string,
       //       backgroundColor: LevelColor.levelMapBackgroundColor,
@@ -91,10 +92,10 @@ class InterconnectivityController extends GetxController {
         return ConfirmationDialogForInternet(
           message: 'Enable Internet \nTo run the app smoothly',
           onConfirm: () async {
-            await AppSettings.openDataRoamingSettings( asAnotherTask: true);
+            await AppSettings.openDataRoamingSettings(asAnotherTask: true);
             Get.back();
             log('returned from setting');
-            if (number % 3 != 0) {
+            if (number % 2 != 0) {
               ConnectivityResult result =
                   await _networkConnectivity.checkConnectivity();
               _checkStatus(result);

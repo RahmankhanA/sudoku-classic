@@ -1,6 +1,6 @@
 name: sudoku_classic
 
-version: 1.0.1+2
+version: 1.0.0+2
 publish_to: none
 description: A new Flutter project.
 environment:

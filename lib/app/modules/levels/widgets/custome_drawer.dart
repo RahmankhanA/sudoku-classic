@@ -64,18 +64,22 @@ class CustomDrawer extends StatelessWidget {
                     : const SizedBox(
                         height: 0,
                       ),
-                ListTile(
-                  leading: const Icon(Icons.calendar_today),
-                  title: const Text('Daily Activity'),
-                  trailing: const Icon(Icons.arrow_forward_ios),
-                  onTap: () {
-                    // Update the state of the app.
-                    // ...
-                    // log(theme.appBarTheme.toString());
-                    // Get.back();
-                    Get.toNamed('/daily-activity');
-                  },
-                ),
+                kDebugMode
+                    ? ListTile(
+                        leading: const Icon(Icons.calendar_today),
+                        title: const Text('Daily Activity'),
+                        trailing: const Icon(Icons.arrow_forward_ios),
+                        onTap: () {
+                          // Update the state of the app.
+                          // ...
+                          // log(theme.appBarTheme.toString());
+                          // Get.back();
+                          Get.toNamed('/daily-activity');
+                        },
+                      )
+                    : const SizedBox(
+                        height: 0,
+                      ),
                 ListTile(
                   leading: const Icon(Icons.person_3),
                   title: const Text('profile'),

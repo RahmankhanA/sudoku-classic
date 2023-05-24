@@ -11,7 +11,7 @@ class SimpleLicence extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         child: Image.asset('assets/icon/icon_foreground.png', width: 48, height: 48),
       ),
-      applicationVersion: '1.0.1',
+      applicationVersion: '1.0.2',
       applicationLegalese: 'Copyright ${DateTime.now().year} ARK KHAN',
     );
 

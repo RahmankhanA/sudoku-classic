@@ -23,3 +23,31 @@ With multiple difficulty levels to choose from, including easy, medium, and hard
 Need a little help along the way? No problem! Our game features a handy hint system that can help you solve even the toughest puzzles. And if you make a mistake, don't worry - our game also includes a check for correct moves, so you can easily identify and fix any errors.
 
 But don't get too comfortable - our game also includes a timer and a limited number of lives, so you'll need to think fast and carefully if you want to beat the clock and stay in the game. So what are you waiting for? Download our Sudoku game today and put your puzzle-solving skills to the test!
+
+
+
+Sudoku Classic is a captivating and user-friendly mobile application that brings the timeless puzzle game of Sudoku to your fingertips. Designed for puzzle enthusiasts of all ages, this app provides an immersive and enjoyable experience, allowing you to challenge your mind and enhance your logical thinking skills.
+
+With a sleek and intuitive interface, Sudoku Classic offers a seamless navigation system, making it easy for both beginners and seasoned players to dive right into the world of Sudoku. The app provides a wide range of difficulty levels, ensuring there's a suitable challenge for everyone, from casual players to avid puzzle solvers.
+
+The key features of Sudoku Classic include:
+
+1. Puzzle Generation: The app generates an infinite number of unique Sudoku puzzles, guaranteeing an endless supply of brain-teasing challenges. Each puzzle is carefully crafted to maintain a perfect balance of difficulty and solvability.
+
+2. Difficulty Levels: Sudoku Classic offers various difficulty levels, such as Easy, Medium, Hard, and Expert. Whether you're a novice or a Sudoku master, you can choose the level that suits your skill and preference.
+
+3. Intelligent Hints: Stuck on a puzzle? Sudoku Classic provides intelligent hints to assist you along the way. From highlighting potential candidates to suggesting the next logical move, these hints ensure that you can progress without feeling overwhelmed.
+
+4. Error Checking: The app includes an error-checking feature that helps you identify mistakes and incorrect placements. This feature ensures that you can solve puzzles with confidence and accuracy.
+
+5. Note-Taking: Sudoku Classic allows you to make notes and pencil in possible numbers directly on the grid. This feature helps you keep track of potential solutions and facilitates a systematic approach to solving the puzzles.
+
+6. Statistics and Progress Tracking: The app keeps track of your solving time, accuracy, and progress for each difficulty level. It provides detailed statistics and achievements, allowing you to monitor your improvement over time.
+
+7. Customization Options: Sudoku Classic offers customization options, allowing you to personalize the game according to your preferences. You can choose from different themes, color schemes, and grid styles to create a visually pleasing experience.
+
+8. User-Friendly Interface: The app features a clean and intuitive interface with smooth navigation, making it easy to navigate through puzzles, access settings, and enjoy a seamless gameplay experience.
+
+9. Offline Play: Sudoku Classic can be played offline, ensuring that you can enjoy the game anytime, anywhere, without the need for an internet connection.
+
+Sudoku Classic is the ultimate companion for Sudoku enthusiasts, providing a challenging, rewarding, and highly addictive puzzle-solving experience. Download the app today and embark on a journey to sharpen your mind and become a Sudoku master.
